@@ -3,14 +3,32 @@ package com.abit.han.pda.push;
 
 import android.util.Log;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.yiche.net.NetCenter;
 import com.yiche.net.NetParams;
 import com.yiche.net.NetRes;
 import com.yiche.net.NetworkResponse;
 import com.yiche.net.ReqBody;
+import com.yiche.net.adapter2.CookieJarImpl;
+import com.yiche.net.adapter2.OkIntercetor;
+import com.yiche.net.adapter2.PersistentCookieStore;
 import com.yiche.net.callback.YCStringRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Han on 2016/10/15.
@@ -40,8 +58,11 @@ public class PushClient {
         url = url + "?sign=" + sign;
         ReqBody rb = ReqBody.post().url(url);
         rb.addHeader("User-Agent", USER_AGENT);
+        rb.addParams("hello","world");
         rb.addParams(NetParams.ExtraPostBody.create("application/json; charset=utf-8",postBody));
         // Send the post request and get the response
+//        post(url,postBody);
+
         NetCenter.newRequest(rb, new YCStringRequest() {
             @Override
             public void onResponse(NetRes<String> netResPonse) {
@@ -62,6 +83,46 @@ public class PushClient {
             }
         });
         return true;
+    }
+
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    OkHttpClient client ;
+    {
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+        okHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
+        okHttpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
+        okHttpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
+        okHttpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
+        client = okHttpClientBuilder.build();
+    }
+
+    void post(String url, String json)  {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("User-Agent", USER_AGENT)
+                .post(body)
+                .build();
+         client.newCall(request).enqueue(new Callback() {
+             @Override
+             public void onFailure(Call call, IOException e) {
+                 e.printStackTrace();
+             }
+
+             @Override
+             public void onResponse(Call call, Response response) throws IOException {
+                 int status = response.code();
+                 Log.i("hh","status: "+status);
+                 Log.i("hh","内容: "+response.body().string());
+             }
+         });
+
+    }
+
+    interface CB{
+        void onResponse(Response response);
+        void onError(Throwable e);
     }
 
 

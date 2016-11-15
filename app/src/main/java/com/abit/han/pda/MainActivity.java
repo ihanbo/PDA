@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.abit.han.pda.push.Demo;
+import com.facebook.stetho.Stetho;
 import com.yiche.net.NetCenter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -17,6 +18,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NetCenter.init(this);
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
         findViews();
     }
 

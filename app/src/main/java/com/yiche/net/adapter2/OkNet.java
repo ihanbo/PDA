@@ -2,6 +2,7 @@ package com.yiche.net.adapter2;
 
 import android.content.Context;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.yiche.net.Delivery;
 import com.yiche.net.INet;
 import com.yiche.net.IReponse;
@@ -48,8 +49,7 @@ public class OkNet implements INet {
                             return true;
                         }
                     });
-                    OkIntercetor okIntercetor = new OkIntercetor();
-                    okHttpClientBuilder.addNetworkInterceptor(okIntercetor);
+                    okHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
                     okHttpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
                     okHttpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
                     okHttpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
