@@ -8,6 +8,7 @@ import com.yiche.net.NetCenter;
 import com.yiche.net.NetParams;
 import com.yiche.net.NetRes;
 import com.yiche.net.NetworkResponse;
+import com.yiche.net.PostBody;
 import com.yiche.net.ReqBody;
 import com.yiche.net.adapter2.CookieJarImpl;
 import com.yiche.net.adapter2.OkIntercetor;
@@ -58,8 +59,7 @@ public class PushClient {
         url = url + "?sign=" + sign;
         ReqBody rb = ReqBody.post().url(url);
         rb.addHeader("User-Agent", USER_AGENT);
-        rb.addParams("hello","world");
-        rb.addParams(NetParams.ExtraPostBody.create("application/json; charset=utf-8",postBody));
+        rb.setPostBody(PostBody.create("application/json; charset=utf-8",postBody));
         // Send the post request and get the response
 //        post(url,postBody);
 
@@ -120,12 +120,6 @@ public class PushClient {
 
     }
 
-    interface CB{
-        void onResponse(Response response);
-        void onError(Throwable e);
-    }
-
-
 
     // Upload file with device_tokens to Umeng
     public String uploadContents(String appkey, String appMasterSecret, String contents) throws Exception {
@@ -142,7 +136,7 @@ public class PushClient {
         url = url + "?sign=" + sign;
         ReqBody rb = ReqBody.post().url(url);
         rb.addHeader("User-Agent", USER_AGENT);
-        rb.addParams(NetParams.ExtraPostBody.create("application/json; charset=utf-8",postBody));
+        rb.setPostBody(PostBody.create("application/json; charset=utf-8",postBody));
         NetCenter.newRequest(rb, new YCStringRequest() {
             @Override
             public void onResponse(NetRes<String> netResPonse) {
