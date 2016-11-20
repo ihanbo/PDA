@@ -44,10 +44,6 @@ public class NetParams implements Serializable {
      */
     public final ConcurrentHashMap<String, MyBytesWrapper> bytesParams = new ConcurrentHashMap<String, MyBytesWrapper>();
 
-    /**
-     * 单独请求体，非键值对，如json请求
-     */
-    public final List< ExtraPostBody> singlePostBodies = new ArrayList<>(1);
 
     protected boolean autoCloseInputStreams;
 
@@ -175,14 +171,6 @@ public class NetParams implements Serializable {
                     contentType, autoClose));
         }
     }
-
-    //独立请求体
-    public void put(ExtraPostBody postBody) {
-        if (postBody != null) {
-            singlePostBodies.add(postBody);
-        }
-    }
-
 
     public void remove(String key) {
         urlParams.remove(key);
@@ -320,13 +308,12 @@ public class NetParams implements Serializable {
 
     public boolean isHasParams() {
         return !urlParams.isEmpty() || !streamParams.isEmpty()
-                || !fileParams.isEmpty()|| !bytesParams.isEmpty()
-                ||!singlePostBodies.isEmpty();
+                || !fileParams.isEmpty()|| !bytesParams.isEmpty();
     }
 
     public boolean isHasFileParams() {
         return !streamParams.isEmpty() || !fileParams.isEmpty()
-                || !bytesParams.isEmpty()|| !singlePostBodies.isEmpty();
+                || !bytesParams.isEmpty();
     }
 
     //=====start=====拷自http源码 格式化参数及encode用
@@ -457,26 +444,6 @@ public class NetParams implements Serializable {
         String getValue();
     }
 
-    /** post请求体，如json，其实和请求参数是并列的 */
-    public final static class ExtraPostBody{
-        public String mediaType;
-        public byte[] data;
-
-        public ExtraPostBody(String mediaType, byte[] data) {
-            this.mediaType = mediaType;
-            this.data = data;
-        }
-
-        public static ExtraPostBody create(String mediaType, String content) {
-            Charset charset = Charset.forName("UTF-8");
-            byte[] bytes = content.getBytes(charset);
-            return new ExtraPostBody(mediaType,bytes);
-        }
-
-        public boolean isAvilabvle() {
-            return mediaType!=null&&data!=null;
-        }
-    }
 
     /**
      * 拷自http源码

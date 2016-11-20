@@ -22,6 +22,7 @@ public class ReqBody {
     public String url;
     public Map<String, String> headers;
     public NetParams params;
+    public PostBody postBody;
 
     public List<WrapedCallBack> funcs;
 
@@ -68,6 +69,12 @@ public class ReqBody {
     //表单参数
     public ReqBody setParams(NetParams params) {
         this.params = params;
+        return this;
+    }
+
+    /** 设置后会忽略NetParams*/
+    public ReqBody setPostBody(PostBody postBody) {
+        this.postBody = postBody;
         return this;
     }
 

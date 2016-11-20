@@ -7,6 +7,7 @@ import com.yiche.net.NetUtils;
 import com.yiche.net.ReqBody;
 import com.yiche.net.YCallback;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +15,11 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.internal.Util;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 /**
  * Post请求
@@ -25,7 +31,27 @@ public class OkPostRequest extends IOkRequest {
 
     @Override
     protected okhttp3.RequestBody buildRequestBody() {
-        return buildPostRequestBody(rb.params);
+        if(rb.postBody!=null){
+            return new RequestBody() {
+                @Override
+                public MediaType contentType() {
+                    return MediaType.parse(rb.postBody.getMediaType());
+                }
+
+                @Override
+                public void writeTo(BufferedSink sink) throws IOException {
+                    Source source = null;
+                    try {
+                        source = Okio.source(rb.postBody.getIputStream());
+                        sink.writeAll(source);
+                    } finally {
+                        Util.closeQuietly(source);
+                    }
+                }
+            };
+        }else{
+            return buildPostRequestBody(rb.params);
+        }
     }
 
     @Override
@@ -68,7 +94,7 @@ public class OkPostRequest extends IOkRequest {
         } else {
             //先添加表单参数
             MultipartBody.Builder builder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM);
+                    .setType(MultipartBody.MIXED);
             addParams(builder, np.urlParams);
             // Add stream params
             for (ConcurrentHashMap.Entry<String, NetParams.MyStreamWrapper> entry : np.streamParams.entrySet()) {
@@ -102,14 +128,6 @@ public class OkPostRequest extends IOkRequest {
                 String customFileName = fileWrapper.customFileName==null?  System.currentTimeMillis()+fileWrapper.file.getName(): fileWrapper.customFileName;
                 builder.addFormDataPart(key, customFileName, fileBody);
                 //httpclient的写法：addPart(entry.getKey(), fileWrapper.file, fileWrapper.contentType, fileWrapper.customFileName);
-            }
-
-            // Add singlePostBodies
-            for (NetParams.ExtraPostBody entry : np.singlePostBodies) {
-                if(entry.isAvilabvle()){
-                    okhttp3.RequestBody rb =  okhttp3.RequestBody.create(MediaType.parse(entry.mediaType),entry.data);
-                    builder.addPart(rb);
-                }
             }
             return builder.build();
         }
