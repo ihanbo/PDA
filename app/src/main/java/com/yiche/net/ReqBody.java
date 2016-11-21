@@ -152,17 +152,6 @@ public class ReqBody {
     public ReqBody addParams(String key, byte[] bytes)  {
         return addParams(key, bytes, null, null);
     }
-    //单独请求体
-    public ReqBody addParams(NetParams.ExtraPostBody singlePostBody) throws FileNotFoundException {
-        if (singlePostBody == null ) {
-            return this;
-        }
-        if (this.params == null) {
-            params = new NetParams();
-        }
-        params.put(singlePostBody);
-        return this;
-    }
 
     //head
     public ReqBody headers(Map<String, String> headers) {
