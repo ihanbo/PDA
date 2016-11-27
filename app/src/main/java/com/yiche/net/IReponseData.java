@@ -7,7 +7,7 @@ import java.io.InputStream;
  * Created by ihanb on 2016/11/10.
  */
 
-public interface IReponse {
+public interface IReponseData {
     byte[] bytes() throws IOException;
     InputStream byteStream();
     String string() throws IOException;

@@ -11,23 +11,23 @@ import java.util.Map;
 /**
  * 响应结果的包裹
  */
-public class NetworkResponse implements IReponse {
-    public NetworkResponse(int statusCode, IReponse responseData, Map<String, String> headers, long networkTimeMs) {
+public class NetworkResponse implements IReponseData {
+    public NetworkResponse(int statusCode, IReponseData responseData, Map<String, String> headers, long networkTimeMs) {
         this.statusCode = statusCode;
         this.responseData = responseData;
         this.headers = headers;
         this.networkTimeMs = networkTimeMs;
     }
 
-    public NetworkResponse(int statusCode, IReponse responseData, Map<String, String> headers) {
+    public NetworkResponse(int statusCode, IReponseData responseData, Map<String, String> headers) {
         this(statusCode, responseData, headers, 0);
     }
 
-    public NetworkResponse(IReponse responseData) {
+    public NetworkResponse(IReponseData responseData) {
         this(200, responseData, Collections.<String, String>emptyMap(), 0);
     }
 
-    public NetworkResponse(IReponse responseData, Map<String, String> headers) {
+    public NetworkResponse(IReponseData responseData, Map<String, String> headers) {
         this(200, responseData, headers, 0);
     }
 
@@ -40,7 +40,8 @@ public class NetworkResponse implements IReponse {
 
     /** 响应状态码*/
     public final int statusCode;
-    public final IReponse responseData;
+    /** 相应内容*/
+    public final IReponseData responseData;
     /** 响应头*/
     public final Map<String, String> headers;
     /** 请求-响应的时间 */

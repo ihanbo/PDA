@@ -2,7 +2,7 @@ package com.yiche.net.adapter2;
 
 import android.os.SystemClock;
 import com.yiche.net.Delivery;
-import com.yiche.net.NetRes;
+import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
 import com.yiche.net.ReqBody;
 import com.yiche.net.YCallback;
@@ -38,7 +38,7 @@ public class OkCallBack<T> implements okhttp3.Callback {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        NetRes<T> res = NetRes.error(e,null);
+        NetResultPac<T> res = NetResultPac.error(e,null);
         res.setRb(rb);
         postResult(res);
 
@@ -46,7 +46,7 @@ public class OkCallBack<T> implements okhttp3.Callback {
 
     @Override
     public void onResponse(Call call, Response response) {
-        NetRes<T> res;
+        NetResultPac<T> res;
         if (response.code() >= 400 && response.code() <= 599) {
             String content = " wrong statuscode ,code >=400&&code<=599 -->content: ";
             try {
@@ -54,7 +54,7 @@ public class OkCallBack<T> implements okhttp3.Callback {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            res = NetRes.error(new IOException(content),OkNet.getInstance().transformResponse(response));
+            res = NetResultPac.error(new IOException(content),OkNet.getInstance().transformResponse(response));
             res.setRb(rb);
             postResult(res);
             return;
@@ -68,18 +68,18 @@ public class OkCallBack<T> implements okhttp3.Callback {
 
 
     /** 主线程发送结果*/
-    public void postResult(NetRes<T> res) {
+    public void postResult(NetResultPac<T> res) {
         mDelivery.postResponse(new ResponseRunable(res, yCallback));
     }
 
 
     public static class ResponseRunable<T> implements Runnable {
-        public ResponseRunable(NetRes<T> res, YCallback<T> yCallback) {
+        public ResponseRunable(NetResultPac<T> res, YCallback<T> yCallback) {
             this.res = res;
             this.yCallback = yCallback;
         }
 
-        NetRes<T> res;
+        NetResultPac<T> res;
         YCallback<T> yCallback;
 
         @Override

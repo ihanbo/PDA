@@ -1,6 +1,6 @@
 package com.yiche.net.parser;
 
-import com.yiche.net.NetRes;
+import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
 
 import java.io.IOException;
@@ -14,16 +14,16 @@ public class StringParser implements Iparser<String> {
         return instance;
     }
     @Override
-    public NetRes<String> parse(NetworkResponse networkResponse) {
+    public NetResultPac<String> parse(NetworkResponse networkResponse) {
         String parsed = null;
         try {
             parsed = networkResponse.string();
             if(parsed==null){
-                return NetRes.error(new IOException("H: StringParser string result is null!"),networkResponse);
+                return NetResultPac.error(new IOException("H: StringParser string result is null!"),networkResponse);
             }
-            return NetRes.success(parsed, networkResponse, parsed).setResponseString(parsed);
+            return NetResultPac.success(parsed, networkResponse, parsed).setResponseString(parsed);
         } catch (Exception e) {
-            return NetRes.error(e,networkResponse);
+            return NetResultPac.error(e,networkResponse);
         }
     }
 }

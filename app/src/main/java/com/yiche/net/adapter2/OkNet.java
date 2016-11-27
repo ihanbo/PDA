@@ -5,7 +5,7 @@ import android.content.Context;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.yiche.net.Delivery;
 import com.yiche.net.INet;
-import com.yiche.net.IReponse;
+import com.yiche.net.IReponseData;
 import com.yiche.net.LL;
 import com.yiche.net.NetParams;
 import com.yiche.net.NetUtils;
@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
 import okhttp3.CookieJar;
@@ -238,7 +235,7 @@ public class OkNet implements INet {
         //状态码
         int statusCode = okHttpResponse.code();
         //内容
-        IReponse responseData = null;
+        IReponseData responseData = null;
         if (okHttpResponse.body() != null) {
             responseData = new OkResponseData(okHttpResponse.body());
         }

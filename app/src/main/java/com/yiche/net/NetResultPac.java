@@ -19,7 +19,7 @@ package com.yiche.net;
 /**
  * 投递结果的封装，成功和失败都有
  */
-public class NetRes<T> {
+public class NetResultPac<T> {
 
 
     /** 异常*/
@@ -40,42 +40,42 @@ public class NetRes<T> {
     public Object middleExtra;
 
 
-    public static <T> NetRes<T> success(T result, NetworkResponse response, String descMsg) {
-        return new NetRes(result, response).setDesc(descMsg);
+    public static <T> NetResultPac<T> success(T result, NetworkResponse response, String descMsg) {
+        return new NetResultPac(result, response).setDesc(descMsg);
     }
 
-    public static NetRes error(Throwable error,NetworkResponse response) {
-        return new NetRes(error).setDesc(error.getMessage()).setNetWorkResponse(response);
+    public static NetResultPac error(Throwable error, NetworkResponse response) {
+        return new NetResultPac(error).setDesc(error.getMessage()).setNetWorkResponse(response);
     }
 
-    private NetRes setNetWorkResponse(NetworkResponse response) {
+    private NetResultPac setNetWorkResponse(NetworkResponse response) {
         this.response = response;
         return this;
     }
 
-    private NetRes(T result, NetworkResponse response) {
+    private NetResultPac(T result, NetworkResponse response) {
         this.result = result;
         this.error = null;
         this.response = response;
     }
 
-    private NetRes(Throwable error) {
+    private NetResultPac(Throwable error) {
         this.result = null;
         this.response = null;
         this.error = error;
     }
 
-    public NetRes<T> setRb(ReqBody rb) {
+    public NetResultPac<T> setRb(ReqBody rb) {
         this.rb = rb;
         return this;
     }
 
-    public NetRes<T> setDesc(String descMsg) {
+    public NetResultPac<T> setDesc(String descMsg) {
         this.descMsg = descMsg;
         return this;
     }
 
-    public NetRes<T> setMiddleExtra(Object middleExtra) {
+    public NetResultPac<T> setMiddleExtra(Object middleExtra) {
         this.middleExtra = middleExtra;
         return this;
     }
@@ -85,7 +85,7 @@ public class NetRes<T> {
     }
 
 
-    public NetRes<T> setResponseString(String responseString) {
+    public NetResultPac<T> setResponseString(String responseString) {
         this.responseString = responseString;
         return this;
     }

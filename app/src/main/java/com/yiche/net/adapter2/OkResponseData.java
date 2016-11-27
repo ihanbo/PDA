@@ -1,6 +1,6 @@
 package com.yiche.net.adapter2;
 
-import com.yiche.net.IReponse;
+import com.yiche.net.IReponseData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
  * Created by ihanb on 2016/11/10.
  */
 
-public class OkResponseData implements IReponse {
+public class OkResponseData implements IReponseData {
     ResponseBody  okBody;
 
     public OkResponseData(ResponseBody okBody) {

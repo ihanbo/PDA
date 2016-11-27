@@ -28,12 +28,12 @@ public class WrapedCallBack<T> extends YCallback<T> {
     }
 
     @Override
-    public NetRes<T> parseNetworkResponse(NetworkResponse response) {
+    public NetResultPac<T> parseNetworkResponse(NetworkResponse response) {
         return wrapedCallBack.parseNetworkResponse(response);
     }
 
     @Override
-    public void onResponse(NetRes<T> netResPonse) {
+    public void onResponse(NetResultPac<T> netResPonse) {
         wrapedCallBack.onResponse(netResPonse);
     }
 
