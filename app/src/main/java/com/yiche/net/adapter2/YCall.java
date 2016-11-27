@@ -52,7 +52,7 @@ public class YCall {
             writeTimeOut = writeTimeOut > 0 ? writeTimeOut : INet.DEFAULT_MILLISECONDS;
             connTimeOut = connTimeOut > 0 ? connTimeOut : INet.DEFAULT_MILLISECONDS;
 
-            clone = OkNet.getOkHttpClient(null).newBuilder()
+            clone = OkNet.getInstance().getOkHttpClient().newBuilder()
                     .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
                     .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
                     .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS)
@@ -60,14 +60,14 @@ public class YCall {
 
             call = clone.newCall(request);
         } else {
-            call = OkNet.getOkHttpClient(null).newCall(request);
+            call = OkNet.getInstance().getOkHttpClient().newCall(request);
         }
         return call;
     }
 
     public NetworkResponse execute() throws IOException {
         buildCall(null);
-        return OkNet.transformResponse(call.execute());
+        return OkNet.getInstance().transformResponse(call.execute());
     }
 
     public <T> void execute(YCallback<T> yCallback, Delivery delivery) {

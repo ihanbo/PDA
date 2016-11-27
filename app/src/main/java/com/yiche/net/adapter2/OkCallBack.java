@@ -54,12 +54,12 @@ public class OkCallBack<T> implements okhttp3.Callback {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            res = NetRes.error(new IOException(content),OkNet.transformResponse(response));
+            res = NetRes.error(new IOException(content),OkNet.getInstance().transformResponse(response));
             res.setRb(rb);
             postResult(res);
             return;
         }
-        NetworkResponse networkResponse = OkNet.transformResponse(response);
+        NetworkResponse networkResponse = OkNet.getInstance().transformResponse(response);
         res = yCallback.parseNetworkResponse(networkResponse);
         res.setRb(rb);
         postResult(res);

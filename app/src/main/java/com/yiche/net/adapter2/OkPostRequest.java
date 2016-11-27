@@ -31,7 +31,7 @@ public class OkPostRequest extends IOkRequest {
 
     @Override
     protected okhttp3.RequestBody buildRequestBody() {
-
+        return (RequestBody) OkNet.getInstance().getPostBody(rb);
     }
 
     @Override

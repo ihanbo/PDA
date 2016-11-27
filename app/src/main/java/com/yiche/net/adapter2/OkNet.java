@@ -45,49 +45,46 @@ import okio.Source;
  * Created by hanbo1 on 2016/4/5.
  */
 public class OkNet implements INet {
-    private static OkHttpClient mClient;
+    private OkHttpClient mClient;
     private Delivery delivery;
 
-    public static OkHttpClient getOkHttpClient(Context context) {
-        if(mClient==null&&context==null){
-            throw new RuntimeException("H: HttpClient not init and context is null!!we need real context to init HttpClient. ");
+    private static OkNet instance;
+
+    public static OkNet getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("not inited!");
         }
-        if (mClient == null) {
-            synchronized (OkNet.class) {
-                if (mClient == null) {
-                    OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-                    //cookie支持
-                    okHttpClientBuilder.cookieJar(new CookieJarImpl(new PersistentCookieStore(context)));
-                    okHttpClientBuilder.hostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String hostname, SSLSession session) {
-                            return true;
-                        }
-                    });
-                    okHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
-                    okHttpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
-                    okHttpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
-                    okHttpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
-                    mClient = okHttpClientBuilder.build();
-                }
-            }
-        }
-        return mClient;
+        return instance;
     }
 
-    public OkNet() {
+    public static OkNet inital(Context context, Delivery delivery) {
+        instance = new OkNet();
+        instance.init(context, delivery);
+        return instance;
     }
 
+    private OkNet() {
+    }
 
     @Override
     public void init(Context context, Delivery delivery) {
-        getOkHttpClient(context);
+        synchronized (OkNet.class) {
+            if (mClient == null) {
+                OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+                //cookie支持
+                okHttpClientBuilder.cookieJar(new CookieJarImpl(new PersistentCookieStore(context)));
+                okHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
+                okHttpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
+                okHttpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
+                okHttpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
+                mClient = okHttpClientBuilder.build();
+            }
+        }
         java.net.CookieManager cookieManager = new java.net.CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
         this.delivery = delivery;
     }
-
 
     @Override
     public void newRequest(ReqBody rb, YCallback callback) {
@@ -119,7 +116,7 @@ public class OkNet implements INet {
     @Override
     public void authCookie() {
         PersistentCookieStore cookieStore = getCookieStore();
-        if (cookieStore == null || cookieStore.getCookies()==null|| cookieStore.getCookies().isEmpty()) {
+        if (cookieStore == null || cookieStore.getCookies() == null || cookieStore.getCookies().isEmpty()) {
             return;
         }
         boolean cookieExpired = cookieStore.getCookies().get(0).expiresAt() <= System.currentTimeMillis();
@@ -127,17 +124,16 @@ public class OkNet implements INet {
     }
 
 
-
     @Override
     public void cacelByTag(Object tag) {
         for (Call call : mClient.dispatcher().queuedCalls()) {
-            RequestObjectTag realTag = ((ReqBody)call.request().tag()).requestTag;
+            RequestObjectTag realTag = ((ReqBody) call.request().tag()).requestTag;
             if (tag.equals(realTag.requestCancelKey)) {
                 call.cancel();
             }
         }
         for (Call call : mClient.dispatcher().runningCalls()) {
-            RequestObjectTag realTag = ((ReqBody)call.request().tag()).requestTag;
+            RequestObjectTag realTag = ((ReqBody) call.request().tag()).requestTag;
             if (tag.equals(realTag.requestCancelKey)) {
                 call.cancel();
             }
@@ -156,11 +152,11 @@ public class OkNet implements INet {
 
     @Override
     public Object getPostBody(final ReqBody reqBody) {
-        if(reqBody==null){
+        if (reqBody == null) {
             return null;
         }
         //有postbody直接取posybody，忽略NetParams
-        if(reqBody.postBody!=null){
+        if (reqBody.postBody != null) {
             return new RequestBody() {
                 @Override
                 public MediaType contentType() {
@@ -202,30 +198,30 @@ public class OkNet implements INet {
                 byte[] data = input2byte(stream.inputStream);
                 if (data != null) {
                     okhttp3.RequestBody byteBody = okhttp3.RequestBody.create(MediaType.parse(stream.contentType), data);
-                    String customName = stream.name==null?  System.currentTimeMillis()+"": stream.name;
+                    String customName = stream.name == null ? System.currentTimeMillis() + "" : stream.name;
                     builder.addFormDataPart(entry.getKey(), customName, byteBody);
-                }else{
+                } else {
                     LL.w("process stream params error!!!!!!");
                 }
             }
             // Add byte[] params
-            for (ConcurrentHashMap.Entry<String, NetParams.MyBytesWrapper> entry :  reqBody.params.bytesParams.entrySet()) {
+            for (ConcurrentHashMap.Entry<String, NetParams.MyBytesWrapper> entry : reqBody.params.bytesParams.entrySet()) {
                 NetParams.MyBytesWrapper stream = entry.getValue();
                 if (stream.bytes != null) {
                     okhttp3.RequestBody byteBody = okhttp3.RequestBody.create(MediaType.parse(stream.contentType), stream.bytes);
-                    String customName = stream.customName==null?  System.currentTimeMillis()+"": stream.customName;
+                    String customName = stream.customName == null ? System.currentTimeMillis() + "" : stream.customName;
                     builder.addFormDataPart(entry.getKey(), customName, byteBody);
-                }else{
+                } else {
                     LL.w("process byte[] params error!!!!!!");
                 }
             }
             // Add file params
-            for (ConcurrentHashMap.Entry<String, NetParams.MyFileWrapper> entry :  reqBody.params.fileParams.entrySet()) {
+            for (ConcurrentHashMap.Entry<String, NetParams.MyFileWrapper> entry : reqBody.params.fileParams.entrySet()) {
                 NetParams.MyFileWrapper fileWrapper = entry.getValue();
                 String key = entry.getKey();
 
                 okhttp3.RequestBody fileBody = okhttp3.RequestBody.create(MediaType.parse(fileWrapper.contentType), fileWrapper.file);
-                String customFileName = fileWrapper.customFileName==null?  System.currentTimeMillis()+fileWrapper.file.getName(): fileWrapper.customFileName;
+                String customFileName = fileWrapper.customFileName == null ? System.currentTimeMillis() + fileWrapper.file.getName() : fileWrapper.customFileName;
                 builder.addFormDataPart(key, customFileName, fileBody);
                 //httpclient的写法：addPart(entry.getKey(), fileWrapper.file, fileWrapper.contentType, fileWrapper.customFileName);
             }
@@ -235,7 +231,7 @@ public class OkNet implements INet {
 
     @Override
     public NetworkResponse transformResponse(Object or) {
-        if(or==null||!(or instanceof Response)){
+        if (or == null || !(or instanceof Response)) {
             return new NetworkResponse();
         }
         Response okHttpResponse = (Response) or;
@@ -243,34 +239,32 @@ public class OkNet implements INet {
         int statusCode = okHttpResponse.code();
         //内容
         IReponse responseData = null;
-        if(okHttpResponse.body()!=null){
+        if (okHttpResponse.body() != null) {
             responseData = new OkResponseData(okHttpResponse.body());
         }
         //Head信息
         Map<String, String> heads = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
         Headers responseHeaders = okHttpResponse.headers();
-        if(responseHeaders!=null&&responseHeaders.size()>0){
+        if (responseHeaders != null && responseHeaders.size() > 0) {
             for (int i = 0; i < responseHeaders.size(); i++) {
                 String name = responseHeaders.name(i), value = responseHeaders.value(i);
                 heads.put(name, value);
             }
         }
         //响应时间
-        long costTime = okHttpResponse.receivedResponseAtMillis()-okHttpResponse.sentRequestAtMillis();
+        long costTime = okHttpResponse.receivedResponseAtMillis() - okHttpResponse.sentRequestAtMillis();
         return new NetworkResponse(statusCode, responseData, heads, costTime);
     }
-
-
-
 
 
     private void addParams(MultipartBody.Builder builder, Map<String, String> params) {
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
-                builder.addFormDataPart(key,params.get(key));
+                builder.addFormDataPart(key, params.get(key));
             }
         }
     }
+
     private void addParams(FormBody.Builder builder, Map<String, String> params) {
         if (params != null) {
             for (String key : params.keySet()) {
@@ -282,8 +276,9 @@ public class OkNet implements INet {
             }
         }
     }
+
     public static final byte[] input2byte(InputStream inStream) {
-        ByteArrayOutputStream swapStream =null ;
+        ByteArrayOutputStream swapStream = null;
         try {
             swapStream = new ByteArrayOutputStream();
             byte[] buff = new byte[4096];
@@ -296,10 +291,16 @@ public class OkNet implements INet {
         } catch (Throwable e) {
             e.printStackTrace();
             return null;
-        }finally {
+        } finally {
             NetUtils.silentCloseStream(inStream);
             NetUtils.silentCloseStream(swapStream);
         }
     }
 
+    public OkHttpClient getOkHttpClient() {
+        if(mClient==null){
+            throw new RuntimeException("not inited");
+        }
+        return mClient;
+    }
 }
