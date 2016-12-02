@@ -18,12 +18,12 @@ public abstract class YCallback<T> {
     public void inProgress(long count, long allcount) { }
 
     /** 解析NetworkResponse 子线程中*/
-    public NetRes<T> parseNetworkResponse(NetworkResponse response){
+    public NetResultPac<T> parseNetworkResponse(NetworkResponse response){
         return parser.parse(response);
     }
 
     /** 投递结果 主线程中 成功,preProcessState 为预处理返回的状态码 */
-    public void onResponse(NetRes<T> netResPonse) {}
+    public void onResponse(NetResultPac<T> netResPonse) {}
 
     /** 投递失败结果 主线程中*/
     public abstract void onError(Throwable e);

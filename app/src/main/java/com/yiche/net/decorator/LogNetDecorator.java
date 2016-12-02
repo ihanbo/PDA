@@ -1,6 +1,6 @@
 package com.yiche.net.decorator;
 
-import com.yiche.net.NetRes;
+import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
 import com.yiche.net.WrapedCallBack;
 
@@ -24,15 +24,15 @@ public class LogNetDecorator extends WrapedCallBack {
     }
 
     @Override
-    public void onResponse(NetRes netResPonse) {
+    public void onResponse(NetResultPac netResPonse) {
         logNetString(netResPonse);
         super.onResponse(netResPonse);
     }
 
     /** 打印网络日志  */
-    public static String logNetString(NetRes res) {
+    public static String logNetString(NetResultPac res) {
         if (res == null) {
-            return "NetRes is null,no msg log! ";
+            return "NetResultPac is null,no msg log! ";
         }
         StringBuilder sb = new StringBuilder(res.isSuccess() ? "===========SUCC===========" :
                 "==============FAILED============");

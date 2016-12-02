@@ -1,6 +1,6 @@
 package com.yiche.net.parser;
 
-import com.yiche.net.NetRes;
+import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
 
 import java.io.IOException;
@@ -16,11 +16,11 @@ public class BinaryParser implements Iparser<byte[]> {
     }
 
     @Override
-    public NetRes<byte[]> parse(NetworkResponse networkResponse) {
+    public NetResultPac<byte[]> parse(NetworkResponse networkResponse) {
         try {
-            return NetRes.success(networkResponse.bytes(), networkResponse, "result is binary data!");
+            return NetResultPac.success(networkResponse.bytes(), networkResponse, "result is binary data!");
         } catch (IOException e) {
-            return NetRes.error(e,networkResponse);
+            return NetResultPac.error(e,networkResponse);
         }
     }
 }

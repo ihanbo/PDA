@@ -5,23 +5,16 @@ import android.util.Log;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.yiche.net.NetCenter;
-import com.yiche.net.NetParams;
-import com.yiche.net.NetRes;
+import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
 import com.yiche.net.PostBody;
 import com.yiche.net.ReqBody;
-import com.yiche.net.adapter2.CookieJarImpl;
-import com.yiche.net.adapter2.OkIntercetor;
-import com.yiche.net.adapter2.PersistentCookieStore;
 import com.yiche.net.callback.YCStringRequest;
-import org.apache.commons.codec.digest.DigestUtils;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -65,7 +58,7 @@ public class PushClient {
 
         NetCenter.newRequest(rb, new YCStringRequest() {
             @Override
-            public void onResponse(NetRes<String> netResPonse) {
+            public void onResponse(NetResultPac<String> netResPonse) {
                 NetworkResponse response = netResPonse.response;
                 int status = response.statusCode;
                 Log.i("hh","status: "+status);
@@ -139,7 +132,7 @@ public class PushClient {
         rb.setPostBody(PostBody.create("application/json; charset=utf-8",postBody));
         NetCenter.newRequest(rb, new YCStringRequest() {
             @Override
-            public void onResponse(NetRes<String> netResPonse) {
+            public void onResponse(NetResultPac<String> netResPonse) {
                 NetworkResponse response = netResPonse.response;
                 int status = response.statusCode;
                 Log.i("hh","status: "+status);
