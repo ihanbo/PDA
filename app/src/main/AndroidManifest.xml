@@ -29,7 +29,7 @@
             android:value="5c4f5c48be92b3d4b5a67dc461beec0c">
         </meta-data>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
