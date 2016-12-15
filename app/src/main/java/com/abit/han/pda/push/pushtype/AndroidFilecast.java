@@ -1,6 +1,11 @@
-package com.abit.han.pda.push;
+package com.abit.han.pda.push.pushtype;
 
 
+import com.abit.han.pda.push.AndroidNotification;
+
+/**
+ * 文件播(多个device_token可通过文件形式批量发送）
+ */
 public class AndroidFilecast extends AndroidNotification {
 	public AndroidFilecast(String appkey,String appMasterSecret) throws Exception {
 			setAppMasterSecret(appMasterSecret);

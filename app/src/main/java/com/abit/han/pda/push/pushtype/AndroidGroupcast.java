@@ -1,7 +1,13 @@
-package com.abit.han.pda.push;
+package com.abit.han.pda.push.pushtype;
+
+import com.abit.han.pda.push.AndroidNotification;
 
 import org.json.JSONObject;
 
+/**
+ * 组播
+ * (按照filter条件筛选特定用户群, 具体请参照filter参数)
+ */
 public class AndroidGroupcast extends AndroidNotification {
 	public AndroidGroupcast(String appkey,String appMasterSecret) throws Exception {
 			setAppMasterSecret(appMasterSecret);

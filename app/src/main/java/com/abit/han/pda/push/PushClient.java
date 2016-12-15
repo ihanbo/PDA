@@ -43,7 +43,12 @@ public class PushClient {
     // The post path
     protected static final String postPath = "/api/send";
 
-    public boolean send(UmengNotification msg) throws Exception {
+
+    public boolean send(UmengNotification msg)throws Exception {
+        return send(msg,null);
+    }
+
+    public boolean send(UmengNotification msg, final PushSendListener failRun) throws Exception {
         String timestamp = Integer.toString((int) (System.currentTimeMillis() / 1000));
         msg.setPredefinedKeyValue("timestamp", timestamp);
         String url = host + postPath;
@@ -61,15 +66,19 @@ public class PushClient {
             public void onResponse(NetResultPac<String> netResPonse) {
                 NetworkResponse response = netResPonse.response;
                 int status = response.statusCode;
+                if(failRun!=null){
+                    failRun.onSuccess(status,netResPonse.result);
+                }
                 Log.i("hh","status: "+status);
                 Log.i("hh","内容: "+netResPonse.result);
             }
-
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                if(failRun!=null){
+                    failRun.onFail(e);
+                }
             }
-
             @Override
             public void onSuccess(String result) {
 
@@ -79,7 +88,7 @@ public class PushClient {
     }
 
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    /*public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     OkHttpClient client ;
     {
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
@@ -111,7 +120,7 @@ public class PushClient {
              }
          });
 
-    }
+    }*/
 
 
     // Upload file with device_tokens to Umeng
@@ -151,7 +160,6 @@ public class PushClient {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
