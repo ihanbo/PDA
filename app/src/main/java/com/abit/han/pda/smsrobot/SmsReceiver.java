@@ -11,6 +11,9 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.abit.han.pda.App;
+import com.abit.han.pda.event.NewSmsEvent;
+
 public class SmsReceiver extends BroadcastReceiver {
     public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
     public static final String SMS_DELIVER_ACTION = "android.provider.Telephony.SMS_DELIVER";
@@ -42,6 +45,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         format.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
                         String sendContent = format.format(date) + ":" + sender + "--" + content;
                         Log.e("SmsReceicer onReceive ", sendContent + " ");
+                        App.getAppEventBus().post(new NewSmsEvent(content,sender, format.format(date)));
                     }
                 }
             }

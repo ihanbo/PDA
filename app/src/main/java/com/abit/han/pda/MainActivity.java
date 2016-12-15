@@ -7,16 +7,21 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.abit.han.pda.base.BaseActivity;
+import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.Demo;
 import com.facebook.stetho.Stetho;
 import com.yiche.net.NetCenter;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import org.greenrobot.eventbus.Subscribe;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        App.getAppEventBus().register(this);
         NetCenter.init(this);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
@@ -49,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+    }
+    @Subscribe
+    public void onEvent(NewSmsEvent event){
+        textView.setText(event.toString());
     }
 
 }
