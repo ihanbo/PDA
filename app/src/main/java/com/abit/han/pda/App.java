@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import com.abit.han.pda.bmob.BmobCenter;
 import com.abit.han.pda.service.FakeService;
 import com.facebook.stetho.Stetho;
+import com.yiche.net.NetCenter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,6 +33,8 @@ public class App extends Application {
         FakeService.start(appEventBus);
         //初始化Stetho
         initStetho();
+        //初始化网络
+        NetCenter.init(this);
     }
 
 
