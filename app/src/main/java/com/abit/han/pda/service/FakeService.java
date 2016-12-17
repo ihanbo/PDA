@@ -3,6 +3,7 @@ package com.abit.han.pda.service;
 import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.push.PushSendListener;
+import com.abit.han.pda.smsrobot.SmsProcesser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,20 +27,10 @@ public class FakeService {
             eventBus.unregister(mInstance);
         }
     }
-
-    @Subscribe
+    //新消息
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEvent(NewSmsEvent event){
-        PushCenter.send(event, new PushSendListener() {
-            @Override
-            public void onFail(Throwable e) {
-
-            }
-
-            @Override
-            public void onSuccess(int status, String result) {
-
-            }
-        });
+        SmsProcesser.onGetNewMsg(event);
     }
 
 }

@@ -4,7 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.abit.han.pda.bmob.BmobCenter;
+import com.abit.han.pda.service.FakeService;
+
 import org.greenrobot.eventbus.EventBus;
+
+import cn.bmob.v3.Bmob;
 
 /**
  * Created by ihanb on 2016/12/15.
@@ -18,7 +23,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
+        //初始化EventBus
         appEventBus = EventBus.builder().eventInheritance(false).build();
+        //初始化Bmob
+        BmobCenter.init(this);
+        //启动FakeService
+        FakeService.start(appEventBus);
     }
 
     @Override

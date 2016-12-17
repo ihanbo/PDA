@@ -1,11 +1,13 @@
 package com.abit.han.pda.event;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by ihanb on 2016/12/15.
  * 新消息事件
  */
 
-public class NewSmsEvent {
+public class NewSmsEvent extends BmobObject{
     public String content;
     public String sender;
     public String time;
@@ -23,5 +25,29 @@ public class NewSmsEvent {
                 ", sender='" + sender + '\'' +
                 ", time='" + time + '\'' +
                 '}';
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

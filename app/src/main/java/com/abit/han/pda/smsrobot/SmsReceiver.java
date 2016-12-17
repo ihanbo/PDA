@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.abit.han.pda.App;
 import com.abit.han.pda.event.NewSmsEvent;
+import com.abit.han.pda.ll;
 
 public class SmsReceiver extends BroadcastReceiver {
     public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
@@ -21,12 +22,12 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "接收短信执行了.....", Toast.LENGTH_LONG).show();
-        ll.e("SMSReceiver, isOrderedBroadcast()=", isOrderedBroadcast() + "");
-        ll.e("SmsReceiver onReceive...", "接收短信执行了......");
+        ll.i("SMSReceiver, isOrderedBroadcast()=", isOrderedBroadcast() + "");
+        ll.i("SmsReceiver onReceive...", "接收短信执行了......");
         String action = intent.getAction();
         if (SMS_RECEIVED_ACTION.equals(action) || SMS_DELIVER_ACTION.equals(action)) {
             Toast.makeText(context, "开始接收短信.....", Toast.LENGTH_LONG).show();
-            ll.e("SmsReceiver onReceive...", "开始接收短信.....");
+            ll.i("SmsReceiver onReceive...", "开始接收短信.....");
 
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
