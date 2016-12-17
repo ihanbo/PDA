@@ -2,10 +2,13 @@ package com.abit.han.pda;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.abit.han.pda.bmob.BmobCenter;
+import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.service.FakeService;
+import com.abit.han.pda.service.IserviceData;
 import com.facebook.stetho.Stetho;
 import com.yiche.net.NetCenter;
 
@@ -35,6 +38,7 @@ public class App extends Application {
         initStetho();
         //初始化网络
         NetCenter.init(this);
+        BaseService.startService(IserviceData.DEFAULT);
     }
 
 

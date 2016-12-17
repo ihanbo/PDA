@@ -1,18 +1,13 @@
 package com.abit.han.pda;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.abit.han.pda.base.BaseActivity;
 import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.Demo;
-import com.facebook.stetho.Stetho;
-import com.yiche.net.NetCenter;
-
 import org.greenrobot.eventbus.Subscribe;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{

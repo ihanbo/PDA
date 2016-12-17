@@ -4,8 +4,12 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+
+import com.abit.han.pda.App;
+import com.abit.han.pda.util.ll;
 
 /**
  * 基础服务
@@ -19,6 +23,18 @@ public class BaseService extends Service implements IserviceProxy{
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ll.i("PDA基础服务已启动");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ll.i("PDA基础服务已关闭");
     }
 
     @Override
@@ -58,4 +74,20 @@ public class BaseService extends Service implements IserviceProxy{
             return null;
         }
     }
+
+
+
+    public static void startService( IserviceData data){
+        try {
+            Intent i = new Intent(App.mApp,BaseService.class);
+            Bundle bundle = new Bundle();
+            data.savaToBundle(bundle);
+            i.putExtra("data",bundle);
+            App.mApp.startService(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ll.throwError(e.getMessage());
+        }
+    }
+
 }

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.abit.han.pda.App;
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.ll;
+import com.abit.han.pda.util.ll;
 
 public class SmsReceiver extends BroadcastReceiver {
     public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";

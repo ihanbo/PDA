@@ -1,7 +1,7 @@
 package com.abit.han.pda.smsrobot;
 
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.ll;
+import com.abit.han.pda.util.ll;
 import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.push.PushSendListener;
 import cn.bmob.v3.exception.BmobException;

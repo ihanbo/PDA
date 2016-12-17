@@ -21,6 +21,12 @@ android {
         }
     }
 
+    productFlavors {
+        inhome {
+        }
+        outhome {
+        }
+    }
 }
 
 dependencies {

@@ -1,9 +1,11 @@
-package com.abit.han.pda;
+package com.abit.han.pda.util;
 
 import android.util.Log;
 
+import com.abit.han.pda.BuildConfig;
+
 /**
- * Created by Han on 2016/12/17.
+ * Log日志
  */
 
 public class ll {
