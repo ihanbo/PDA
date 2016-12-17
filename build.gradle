@@ -3,20 +3,33 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath "io.realm:realm-gradle-plugin:2.3.0-SNAPSHOT"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+
 allprojects {
     repositories {
         jcenter()
         //Bmob的maven仓库地址，必须填写
         maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
+        maven {
+            url "http://mvnrepo.alibaba-inc.com/mvn/repository"
+        }
     }
 }
 

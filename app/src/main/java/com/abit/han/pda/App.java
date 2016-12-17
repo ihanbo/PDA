@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.abit.han.pda.bmob.BmobCenter;
+import com.abit.han.pda.push.RegisterPushReciever;
 import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.service.FakeService;
 import com.abit.han.pda.service.IserviceData;
 import com.facebook.stetho.Stetho;
+import com.umeng.message.PushAgent;
 import com.yiche.net.NetCenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +25,7 @@ import cn.bmob.v3.Bmob;
 public class App extends Application {
     public static App mApp;
     private EventBus appEventBus;
+    private PushAgent pushAgent;
 
     @Override
     public void onCreate() {
@@ -38,7 +41,10 @@ public class App extends Application {
         initStetho();
         //初始化网络
         NetCenter.init(this);
+        //启动服务
         BaseService.startService(IserviceData.DEFAULT);
+        //注册推送
+        RegisterPushReciever.register(this);
     }
 
 
