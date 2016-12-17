@@ -8,11 +8,12 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
- * Created by Han on 2016/12/17.
+ * 短信处理中心
  */
 
 public class SmsProcesser {
 
+    /** 来信短信了*/
     public static void onGetNewMsg(NewSmsEvent event){
         PushCenter.send(event, new SmsSendListener());
         event.save(new BmobSaveListener());

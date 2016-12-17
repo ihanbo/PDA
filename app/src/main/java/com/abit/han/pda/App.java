@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.abit.han.pda.bmob.BmobCenter;
 import com.abit.han.pda.service.FakeService;
+import com.facebook.stetho.Stetho;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +30,10 @@ public class App extends Application {
         BmobCenter.init(this);
         //启动FakeService
         FakeService.start(appEventBus);
+        //初始化Stetho
+        initStetho();
     }
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -44,4 +48,17 @@ public class App extends Application {
     public static EventBus getAppEventBus(){
         return mApp.appEventBus;
     }
+
+
+    /** Chrome调试*/
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+    }
+
 }
