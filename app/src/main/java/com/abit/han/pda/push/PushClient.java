@@ -48,14 +48,15 @@ public class PushClient {
         return send(msg,null);
     }
 
-    public boolean send(UmengNotification msg, final PushSendListener failRun) throws Exception {
+    public boolean send(UmengNotification msg, final PushSendListener failRun) throws Exception{
         String timestamp = Integer.toString((int) (System.currentTimeMillis() / 1000));
+
         msg.setPredefinedKeyValue("timestamp", timestamp);
         String url = host + postPath;
         String postBody = msg.getPostBody();
         String sign = PushHelper.md5Hex(("POST" + url + postBody + msg.getAppMasterSecret()).getBytes("utf8"));
         url = url + "?sign=" + sign;
-        ReqBody rb = ReqBody.post().url(url);
+        ReqBody rb  = ReqBody.post().url(url);
         rb.addHeader("User-Agent", USER_AGENT);
         rb.setPostBody(PostBody.create("application/json; charset=utf-8",postBody));
         // Send the post request and get the response

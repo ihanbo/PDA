@@ -1,5 +1,6 @@
 package com.abit.han.pda.push;
 
+import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.pushtype.AndroidBroadcast;
 import com.abit.han.pda.push.pushtype.AndroidCustomizedcast;
 import com.abit.han.pda.push.pushtype.AndroidFilecast;
@@ -14,6 +15,8 @@ public class Demo {
     private static String appMasterSecret = "yvs5icmg9sihzaharfao7q3d8zgsde4i";
     private static String timestamp = null;
     private static PushClient client = new PushClient();
+
+
 
     public Demo(String key, String secret) {
         try {
@@ -112,21 +115,30 @@ public class Demo {
      * 自定义-直接发送
      * @throws Exception
      */
-    public static void sendAndroidCustomizedcast() throws Exception {
-        AndroidCustomizedcast customizedcast = new AndroidCustomizedcast(appkey, appMasterSecret);
-        // TODO Set your alias here, and use comma to split them if there are multiple alias.
-        // And if you have many alias, you can also upload a file containing these alias, then
-        // use file_id to send customized notification.
-        customizedcast.setAlias("alias", "alias_type");
-        customizedcast.setTicker("Android customizedcast ticker");
-        customizedcast.setTitle("中文的title");
-        customizedcast.setText("Android customizedcast text");
-        customizedcast.goAppAfterOpen();
-        customizedcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
-        // TODO Set 'production_mode' to 'false' if it's a test device.
-        // For how to register a test device, please see the developer doc.
-        customizedcast.setProductionMode();
-        client.send(customizedcast);
+    public static void sendAndroidCustomizedcast(String alias,String title,String content,PushSendListener sendListener)  {
+        AndroidCustomizedcast customizedcast = null;
+        try {
+            customizedcast = new AndroidCustomizedcast(appkey, appMasterSecret);
+            // TODO Set your alias here, and use comma to split them if there are multiple alias.
+            // And if you have many alias, you can also upload a file containing these alias, then
+            // use file_id to send customized notification.
+            customizedcast.setAlias("alias", alias);
+            customizedcast.setTicker(title);
+            customizedcast.setTitle(title);
+            customizedcast.setText(content);
+            customizedcast.goAppAfterOpen();
+            customizedcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
+            // TODO Set 'production_mode' to 'false' if it's a test device.
+            // For how to register a test device, please see the developer doc.
+            customizedcast.setProductionMode();
+            client.send(customizedcast,sendListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(sendListener!=null){
+                sendListener.onFail(e);
+            }
+        }
+
     }
 
     /**
