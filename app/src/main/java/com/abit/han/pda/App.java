@@ -2,11 +2,10 @@ package com.abit.han.pda;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.abit.han.pda.bmob.BmobCenter;
-import com.abit.han.pda.push.RegisterPushReciever;
+import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.service.FakeService;
 import com.abit.han.pda.service.IserviceData;
@@ -15,8 +14,6 @@ import com.umeng.message.PushAgent;
 import com.yiche.net.NetCenter;
 
 import org.greenrobot.eventbus.EventBus;
-
-import cn.bmob.v3.Bmob;
 
 /**
  * Created by ihanb on 2016/12/15.
@@ -44,7 +41,7 @@ public class App extends Application {
         //启动服务
         BaseService.startService(IserviceData.DEFAULT);
         //注册推送
-        RegisterPushReciever.register(this);
+        PushCenter.registerRecievePush(this);
     }
 
 

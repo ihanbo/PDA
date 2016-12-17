@@ -6,6 +6,7 @@ import com.abit.han.pda.push.pushtype.AndroidCustomizedcast;
 import com.abit.han.pda.push.pushtype.AndroidFilecast;
 import com.abit.han.pda.push.pushtype.AndroidGroupcast;
 import com.abit.han.pda.push.pushtype.AndroidUnicast;
+import com.abit.han.pda.util.ll;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,9 +74,12 @@ public class Demo {
      * 组播
      * @throws Exception
      */
-    public static void sendAndroidGroupcast() throws Exception {
+    public static void sendAndroidGroupcast(String ticker,String title,String content,String... tag) throws Exception {
+        if(tag==null||tag.length==0){
+            throw new RuntimeException("tag 不能为空");
+        }
         AndroidGroupcast groupcast = new AndroidGroupcast(appkey, appMasterSecret);
-        /*  TODO
+        /*  例子
 		 *  Construct the filter condition:
 		 *  "where": 
 		 *	{
@@ -89,20 +93,19 @@ public class Demo {
         JSONObject filterJson = new JSONObject();
         JSONObject whereJson = new JSONObject();
         JSONArray tagArray = new JSONArray();
-        JSONObject testTag = new JSONObject();
-        JSONObject TestTag = new JSONObject();
-        testTag.put("tag", "test");
-        TestTag.put("tag", "Test");
-        tagArray.put(testTag);
-        tagArray.put(TestTag);
+        for (int i = 0; i <tag.length ; i++) {
+            JSONObject tt = new JSONObject();
+            tt.put("tag", tag[i]);
+            tagArray.put(tt);
+        }
         whereJson.put("and", tagArray);
         filterJson.put("where", whereJson);
-        System.out.println(filterJson.toString());
+        ll.i(filterJson.toString());
 
         groupcast.setFilter(filterJson);
-        groupcast.setTicker("Android groupcast ticker");
-        groupcast.setTitle("中文的title");
-        groupcast.setText("Android groupcast text");
+        groupcast.setTicker(ticker);
+        groupcast.setTitle(title);
+        groupcast.setText(content);
         groupcast.goAppAfterOpen();
         groupcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
         // TODO Set 'production_mode' to 'false' if it's a test device.
