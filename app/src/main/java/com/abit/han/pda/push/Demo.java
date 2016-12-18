@@ -110,7 +110,7 @@ public class Demo {
             }
             whereJson.put("and", tagArray);
             filterJson.put("where", whereJson);
-            ll.i(filterJson.toString());
+            ll.i("组播tag: "+filterJson.toString());
 
             groupcast.setFilter(filterJson);
             groupcast.setTicker(ticker);

@@ -39,22 +39,6 @@ public class PushCenter {
 
         mPushAgent.setMessageChannel("general");
 
-
-        //注册推送服务 每次调用register都会回调该接口
-        mPushAgent.register(new IUmengRegisterCallback() {
-            @Override
-            public void onSuccess(String deviceToken) {
-                ll.i(getClass().getSimpleName(),"注册成功，deviceToken: " + deviceToken);
-                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-                ll.i(getClass().getSimpleName(),"注册失败: " + s + " " + s1);
-                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
-            }
-        });
-
         //sdk开启通知声音
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
 
@@ -72,10 +56,24 @@ public class PushCenter {
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
 
 
-
-
         //设置用户TAG
         mPushAgent.getTagManager().update(new TagCallBack(),TAG_RECIEVE_SMS);
+
+
+        //注册推送服务 每次调用register都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                ll.i("PushCenter","注册成功，deviceToken: " + deviceToken);
+//                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                ll.i(getClass().getSimpleName(),"注册失败: " + s + " " + s1);
+//                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+            }
+        });
 
         /*// sdk关闭通知声音
 		mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
