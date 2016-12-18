@@ -11,6 +11,7 @@ import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.common.inter.ITagManager;
 import com.umeng.message.entity.UMessage;
 import com.umeng.message.tag.TagManager;
 
@@ -24,11 +25,11 @@ public class PushCenter {
     /** 接收消息的Alias */
     public static final String MESSAGE_ALIAS = "message_need";
     /** 标记用户可以接受短信的tag */
-    public static final String TAG_RECIEVE_SMS = "tag_recieve_sms";
+    public static final String TAG_RECIEVE_SMS = "tagrecievesms";
 
     /** 发送推送 */
     public static void send(NewSmsEvent event,PushSendListener listener){
-        Demo.sendAndroidCustomizedcast(MESSAGE_ALIAS, "13511097504新消息", event.toString(), listener);
+        Demo.sendAndroidGroupcast(MESSAGE_ALIAS, "13511097504新消息", event.toString(), listener,TAG_RECIEVE_SMS);
     }
 
     /** 注册接受广播 */
@@ -36,20 +37,26 @@ public class PushCenter {
         PushAgent mPushAgent = PushAgent.getInstance(application);
         mPushAgent.setDebugMode(true);
 
+        mPushAgent.setMessageChannel("general");
+
+
+        //注册推送服务 每次调用register都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                ll.i(getClass().getSimpleName(),"注册成功，deviceToken: " + deviceToken);
+                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                ll.i(getClass().getSimpleName(),"注册失败: " + s + " " + s1);
+                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+            }
+        });
+
         //sdk开启通知声音
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
-
-        //设置用户TAG
-        mPushAgent.getTagManager().add(new TagManager.TCallBack() {
-            @Override
-            public void onMessage(boolean b, com.umeng.common.inter.ITagManager.Result result) {
-                if(b){
-                    ll.i("友盟推送设置用户tag成功");
-                }else{
-                    ll.i("友盟推送设置用户tag失败");
-                }
-            }
-        }, TAG_RECIEVE_SMS);
 
         /**
          * 自定义行为的回调处理
@@ -64,20 +71,11 @@ public class PushCenter {
         };
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
 
-        //注册推送服务 每次调用register都会回调该接口
-        mPushAgent.register(new IUmengRegisterCallback() {
-            @Override
-            public void onSuccess(String deviceToken) {
-                ll.logWarn("device token: " + deviceToken);
-                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
-            }
 
-            @Override
-            public void onFailure(String s, String s1) {
-                ll.logWarn("register failed: " + s + " " + s1);
-                application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
-            }
-        });
+
+
+        //设置用户TAG
+//        mPushAgent.getTagManager().update(new TagCallBack(),TAG_RECIEVE_SMS);
 
         /*// sdk关闭通知声音
 		mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
@@ -141,5 +139,17 @@ public class PushCenter {
         mPushAgent.setMessageHandler(messageHandler);*/
 
 
+    }
+
+
+    public static final class TagCallBack implements TagManager.TCallBack{
+        @Override
+        public void onMessage(boolean b, ITagManager.Result result) {
+            if(b){
+                ll.i("友盟推送设置用户tag成功");
+            }else{
+                ll.i("友盟推送设置用户tag失败:  "+(result==null? "no result!":result.toString()));
+            }
+        }
     }
 }

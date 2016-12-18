@@ -70,8 +70,6 @@ public class PushClient {
                 if(failRun!=null){
                     failRun.onSuccess(status,netResPonse.result);
                 }
-                Log.i("hh","status: "+status);
-                Log.i("hh","内容: "+netResPonse.result);
             }
             @Override
             public void onError(Throwable e) {

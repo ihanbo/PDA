@@ -74,44 +74,52 @@ public class Demo {
      * 组播
      * @throws Exception
      */
-    public static void sendAndroidGroupcast(String ticker,String title,String content,String... tag) throws Exception {
+    public static void sendAndroidGroupcast(String ticker,String title,String content,PushSendListener listener,String... tag)  {
         if(tag==null||tag.length==0){
-            throw new RuntimeException("tag 不能为空");
+            if(listener!=null){
+                listener.onFail(new RuntimeException("tag 不能为空"));
+            }
+            return;
         }
-        AndroidGroupcast groupcast = new AndroidGroupcast(appkey, appMasterSecret);
+        try {
+            AndroidGroupcast groupcast = new AndroidGroupcast(appkey, appMasterSecret);
         /*  例子
 		 *  Construct the filter condition:
-		 *  "where": 
+		 *  "where":
 		 *	{
-    	 *		"and": 
+    	 *		"and":
     	 *		[
       	 *			{"tag":"test"},
       	 *			{"tag":"Test"}
     	 *		]
 		 *	}
 		 */
-        JSONObject filterJson = new JSONObject();
-        JSONObject whereJson = new JSONObject();
-        JSONArray tagArray = new JSONArray();
-        for (int i = 0; i <tag.length ; i++) {
-            JSONObject tt = new JSONObject();
-            tt.put("tag", tag[i]);
-            tagArray.put(tt);
-        }
-        whereJson.put("and", tagArray);
-        filterJson.put("where", whereJson);
-        ll.i(filterJson.toString());
+            JSONObject filterJson = new JSONObject();
+            JSONObject whereJson = new JSONObject();
+            JSONArray tagArray = new JSONArray();
+            for (int i = 0; i <tag.length ; i++) {
+                JSONObject tt = new JSONObject();
+                tt.put("tag", tag[i]);
+                tagArray.put(tt);
+            }
+            whereJson.put("and", tagArray);
+            filterJson.put("where", whereJson);
+            ll.i(filterJson.toString());
 
-        groupcast.setFilter(filterJson);
-        groupcast.setTicker(ticker);
-        groupcast.setTitle(title);
-        groupcast.setText(content);
-        groupcast.goAppAfterOpen();
-        groupcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
-        // TODO Set 'production_mode' to 'false' if it's a test device.
-        // For how to register a test device, please see the developer doc.
-        groupcast.setProductionMode();
-        client.send(groupcast);
+            groupcast.setFilter(filterJson);
+            groupcast.setTicker(ticker);
+            groupcast.setTitle(title);
+            groupcast.setText(content);
+            groupcast.goAppAfterOpen();
+            groupcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
+            // TODO Set 'production_mode' to 'false' if it's a test device.
+            // For how to register a test device, please see the developer doc.
+            groupcast.setProductionMode();
+            client.send(groupcast,listener);
+        } catch (Exception e) {
+            e.printStackTrace();
+            listener.onFail(e);
+        }
     }
 
     /**
