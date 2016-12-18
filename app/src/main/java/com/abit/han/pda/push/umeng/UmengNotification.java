@@ -1,4 +1,4 @@
-package com.abit.han.pda.push;
+package com.abit.han.pda.push.umeng;
 import java.util.Arrays;
 import java.util.HashSet;
 import org.json.JSONObject;

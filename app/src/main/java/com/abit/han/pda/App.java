@@ -41,7 +41,7 @@ public class App extends Application {
         //启动服务
         BaseService.startService(IserviceData.DEFAULT);
         //注册推送
-        PushCenter.registerRecievePush(this);
+        PushCenter.instance.registerToRecievePush(this);
     }
 
 

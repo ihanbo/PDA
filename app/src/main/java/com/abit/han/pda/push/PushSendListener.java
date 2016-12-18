@@ -1,7 +1,7 @@
 package com.abit.han.pda.push;
 
 /**
- * Created by ihanb on 2016/12/15.
+ * 推送监听
  */
 
 public interface PushSendListener {

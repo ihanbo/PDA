@@ -1,7 +1,7 @@
-package com.abit.han.pda.push.pushtype;
+package com.abit.han.pda.push.umeng.pushtype;
 
 
-import com.abit.han.pda.push.AndroidNotification;
+import com.abit.han.pda.push.umeng.AndroidNotification;
 
 /**
  * 文件播(多个device_token可通过文件形式批量发送）

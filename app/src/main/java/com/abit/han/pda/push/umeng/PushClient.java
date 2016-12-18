@@ -1,9 +1,9 @@
-package com.abit.han.pda.push;
+package com.abit.han.pda.push.umeng;
 
 
 import android.util.Log;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.abit.han.pda.push.PushSendListener;
 import com.yiche.net.NetCenter;
 import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
@@ -12,17 +12,6 @@ import com.yiche.net.ReqBody;
 import com.yiche.net.callback.YCStringRequest;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by Han on 2016/10/15.

@@ -7,8 +7,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.abit.han.pda.base.BaseActivity;
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.push.Demo;
-import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.smsrobot.SmsProcesser;
 
 import org.greenrobot.eventbus.Subscribe;

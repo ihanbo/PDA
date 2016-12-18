@@ -1,9 +1,13 @@
 package com.abit.han.pda.service;
 
+import android.util.Log;
+
+import com.abit.han.pda.event.NewPushEvent;
 import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.push.PushSendListener;
 import com.abit.han.pda.smsrobot.SmsProcesser;
+import com.abit.han.pda.util.ll;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,8 +33,14 @@ public class FakeService {
     }
     //新消息
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onEvent(NewSmsEvent event){
+    public void onEventNewSMS(NewSmsEvent event){
         SmsProcesser.onGetNewMsg(event);
+    }
+
+    //新消息
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onEventNewPushMsg(NewPushEvent event){
+        ll.i(event.toString());
     }
 
 }

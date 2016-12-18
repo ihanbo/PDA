@@ -1,6 +1,7 @@
 package com.abit.han.pda.event;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.helper.GsonUtil;
 
 /**
  * Created by ihanb on 2016/12/15.
@@ -20,11 +21,12 @@ public class NewSmsEvent extends BmobObject{
 
     @Override
     public String toString() {
-        return "消息{" +
-                "content='" + content + '\'' +
-                ", sender='" + sender + '\'' +
-                ", time='" + time + '\'' +
-                '}';
+        return "短信内容:" + content + ", 发送人:" + sender  +
+                ", 时间:=" + time ;
+    }
+
+    public String getPushString(){
+        return content+"||"+sender+"||"+time;
     }
 
     public String getContent() {

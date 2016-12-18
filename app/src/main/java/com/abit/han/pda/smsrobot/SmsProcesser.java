@@ -1,6 +1,7 @@
 package com.abit.han.pda.smsrobot;
 
 import com.abit.han.pda.event.NewSmsEvent;
+import com.abit.han.pda.push.PushData;
 import com.abit.han.pda.util.ll;
 import com.abit.han.pda.push.PushCenter;
 import com.abit.han.pda.push.PushSendListener;
@@ -15,7 +16,10 @@ public class SmsProcesser {
 
     /** 来信短信了*/
     public static void onGetNewMsg(NewSmsEvent event){
-        PushCenter.send(event, new SmsSendListener());
+
+        PushCenter.instance.sendPush(new PushData()
+                .setTitle("13511097504短信")
+                .setContent(event.getPushString()), new SmsSendListener());
         event.save(new BmobSaveListener());
     }
 
