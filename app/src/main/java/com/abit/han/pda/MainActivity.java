@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.abit.han.pda.base.BaseActivity;
 import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.push.Demo;
+import com.abit.han.pda.push.PushCenter;
+import com.abit.han.pda.smsrobot.SmsProcesser;
+
 import org.greenrobot.eventbus.Subscribe;
 
 
@@ -37,6 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         if ( v == getMsg ) {
             try {
+                SmsProcesser.onGetNewMsg(new NewSmsEvent("测试内容","测试发送者","now"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
