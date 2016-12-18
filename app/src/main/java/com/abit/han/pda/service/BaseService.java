@@ -17,8 +17,9 @@ import com.abit.han.pda.util.ll;
 
 public class BaseService extends Service implements IserviceProxy{
 
+    /** 服务前台ID */
     private final static int GRAY_SERVICE_ID = 1109;
-
+    private final static String BUNDLE_DATA_KEY = "bundle_data_key";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,7 +41,7 @@ public class BaseService extends Service implements IserviceProxy{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         setGrayForeground();
-        ServiceDispatch.dispatch(this,intent,flags,startId);
+        ServiceDispatch.dispatch(this,intent.getBundleExtra(BUNDLE_DATA_KEY),intent,flags,startId);
         return START_STICKY;
     }
 
@@ -82,12 +83,13 @@ public class BaseService extends Service implements IserviceProxy{
             Intent i = new Intent(App.mApp,BaseService.class);
             Bundle bundle = new Bundle();
             data.savaToBundle(bundle);
-            i.putExtra("data",bundle);
+            i.putExtra(BUNDLE_DATA_KEY,bundle);
             App.mApp.startService(i);
         } catch (Exception e) {
             e.printStackTrace();
             ll.throwError(e.getMessage());
         }
     }
+
 
 }
