@@ -60,21 +60,28 @@ public class Demo {
      *
      * @throws Exception
      */
-    public static void sendAndroidUnicast() throws Exception {
-        AndroidUnicast unicast = new AndroidUnicast(appkey, appMasterSecret);
-        // TODO Set your device token
-        unicast.setDeviceToken("your device token");
-        unicast.setTicker("Android unicast ticker");
-        unicast.setTitle("中文的title");
-        unicast.setText("Android unicast text");
-        unicast.goAppAfterOpen();
-        unicast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
-        // TODO Set 'production_mode' to 'false' if it's a test device.
-        // For how to register a test device, please see the developer doc.
-        unicast.setProductionMode();
-        // Set customized fields
-        unicast.setExtraField("test", "helloworld");
-        client.send(unicast);
+    public static void sendAndroidUnicast(String ticker,String title,String content,PushSendListener listener,String token) {
+        try {
+            AndroidUnicast unicast = new AndroidUnicast(appkey, appMasterSecret);
+            // TODO Set your device token
+            unicast.setDeviceToken(token);
+            unicast.setTicker(ticker);
+            unicast.setTitle(title);
+            unicast.setText(content);
+            unicast.goAppAfterOpen();
+            unicast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
+            // TODO Set 'production_mode' to 'false' if it's a test device.
+            // For how to register a test device, please see the developer doc.
+            unicast.setProductionMode();
+            // Set customized fields
+//            unicast.setExtraField("test", "helloworld");
+            client.send(unicast,listener);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(listener!=null){
+                listener.onFail(e);
+            }
+        }
     }
 
     /**
@@ -99,7 +106,7 @@ public class Demo {
             // For how to register a test device, please see the developer doc.
             listcast.setProductionMode();
             // Set customized fields
-            listcast.setExtraField("test", "helloworld");
+//            listcast.setExtraField("test", "helloworld");
             client.send(listcast,listener);
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +237,6 @@ public class Demo {
         // TODO set your appkey and master secret here
         Demo demo = new Demo("your appkey", "the app master secret");
         try {
-            demo.sendAndroidUnicast();
 			/* TODO these methods are all available, just fill in some fields and do the test
 			 * demo.sendAndroidCustomizedcastFile();
 			 * demo.sendAndroidBroadcast();

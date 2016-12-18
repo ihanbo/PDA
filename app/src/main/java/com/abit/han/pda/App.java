@@ -39,7 +39,7 @@ public class App extends Application {
         //初始化网络
         NetCenter.init(this);
         //启动服务
-//        BaseService.startService(IserviceData.DEFAULT);
+        BaseService.startService(IserviceData.DEFAULT);
         //注册推送
         PushCenter.registerRecievePush(this);
     }
