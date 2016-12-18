@@ -3,6 +3,7 @@ package com.abit.han.pda.service;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.abit.han.pda.service.real.RecievePushService;
 import com.abit.han.pda.util.ll;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class ServiceDispatch {
+    //服务名称
+    public static final String PUSH_RECIEVE_SERVICE = "push_recieve_service";
+
     private static final ConcurrentHashMap<String,IDOService> services = new ConcurrentHashMap<>();
 
     public static void dispatch(IserviceProxy service,Bundle bundle, Intent intent,int flags, int startId){
@@ -20,12 +24,15 @@ public class ServiceDispatch {
             ll.throwError("flag is null");
             return;
         }
+        if(flag.equals("start service")){
+            return;
+        }
         IDOService idoService = services.get(flag);
         if(idoService==null){
             ll.throwError("idoService is null");
             return;
         }
-        idoService.doService(bundle);
+        idoService.doService(bundle,service);
     }
 
     public static void registerServices(IDOService realService){
@@ -36,5 +43,12 @@ public class ServiceDispatch {
         if(pri!=null){
             throw new RuntimeException("cock!! has register!!!!!");
         }
+    }
+
+    /**
+     * 注册所有服务
+     */
+    public static void registeAllServices() {
+        registerServices(new RecievePushService());
     }
 }

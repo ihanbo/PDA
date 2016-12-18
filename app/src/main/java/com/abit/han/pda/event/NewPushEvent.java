@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.abit.han.pda.service.IserviceData;
+import com.abit.han.pda.service.ServiceDispatch;
 
 /**
  * 收到新的推送事件
@@ -72,6 +73,7 @@ public class NewPushEvent implements Parcelable,IserviceData {
 
     @Override
     public void savaToBundle(Bundle bundle) {
-        bundle.putString(FLAG,"");
+        bundle.putString(FLAG, ServiceDispatch.PUSH_RECIEVE_SERVICE);
+        bundle.putParcelable(KEY,this);
     }
 }

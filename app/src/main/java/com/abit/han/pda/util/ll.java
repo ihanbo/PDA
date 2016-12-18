@@ -26,10 +26,10 @@ public class ll {
         if(size<1){
             return;
         }
-        StringBuilder sb = new StringBuilder(s[0]+"::");
+        StringBuilder sb = new StringBuilder(s[0]+"<-->");
         for (int i = 1; i < size; i++) {
             sb.append(s[i]);
-            sb.append("::");
+            sb.append("<-->");
         }
         Log.i("hh",sb.toString());
     }

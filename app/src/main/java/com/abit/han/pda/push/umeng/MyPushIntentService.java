@@ -5,7 +5,9 @@ import android.content.Intent;
 
 import com.abit.han.pda.App;
 import com.abit.han.pda.event.NewPushEvent;
+import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.util.ll;
+import com.abit.han.pda.util.tt;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageService;
 import com.umeng.message.common.UmLog;
@@ -44,8 +46,11 @@ public class MyPushIntentService extends UmengMessageService {
                 UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
             }
             NewPushEvent npe = new NewPushEvent(message,msg.custom,msg.title,msg.text);
-            ll.i(npe.toString());
+            ll.i("MyPushIntentService", tt.getCurProcessName(context),
+                    tt.isServiceRunning(context,BaseService.class.getName())+""
+                    ,npe.toString());
             App.getAppEventBus().post(npe);
+            BaseService.startService(npe);
         } catch (Exception e) {
             UmLog.e(TAG, e.getMessage());
         }

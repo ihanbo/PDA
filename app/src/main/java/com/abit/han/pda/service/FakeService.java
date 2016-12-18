@@ -42,7 +42,7 @@ public class FakeService {
     //新消息
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEventNewPushMsg(NewPushEvent event){
-        ll.i(tt.getCurProcessName(App.mApp),event.text);
+        ll.i(tt.getSimpleName(this),tt.getCurProcessName(App.mApp),event.title);
     }
 
 }

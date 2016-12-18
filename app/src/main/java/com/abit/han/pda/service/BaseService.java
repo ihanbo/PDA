@@ -2,6 +2,7 @@ package com.abit.han.pda.service;
 
 import android.app.Notification;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,13 +30,13 @@ public class BaseService extends Service implements IserviceProxy{
     @Override
     public void onCreate() {
         super.onCreate();
-        ll.i("PDA基础服务已启动");
+        ll.i("BaseService","PDA基础服务已启动");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ll.i("PDA基础服务已关闭");
+        ll.i("BaseService","PDA基础服务已关闭");
     }
 
     @Override
@@ -56,6 +57,11 @@ public class BaseService extends Service implements IserviceProxy{
             startService(innerIntent);
             startForeground(GRAY_SERVICE_ID, new Notification());
         }
+    }
+
+    @Override
+    public Context getServiceContext() {
+        return getBaseContext()==null? getApplicationContext():getBaseContext();
     }
 
 
