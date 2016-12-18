@@ -5,6 +5,7 @@ import com.abit.han.pda.push.pushtype.AndroidBroadcast;
 import com.abit.han.pda.push.pushtype.AndroidCustomizedcast;
 import com.abit.han.pda.push.pushtype.AndroidFilecast;
 import com.abit.han.pda.push.pushtype.AndroidGroupcast;
+import com.abit.han.pda.push.pushtype.AndroidListcast;
 import com.abit.han.pda.push.pushtype.AndroidUnicast;
 import com.abit.han.pda.util.ll;
 
@@ -74,6 +75,38 @@ public class Demo {
         // Set customized fields
         unicast.setExtraField("test", "helloworld");
         client.send(unicast);
+    }
+
+    /**
+     * 列播
+     * @param ticker
+     * @param title
+     * @param content
+     * @param listener
+     * @param deviceToken
+     */
+    public static void sendAndroidListcast(String ticker,String title,String content,PushSendListener listener,String... deviceToken) {
+        try {
+            AndroidListcast listcast = new AndroidListcast(appkey, appMasterSecret);
+            // TODO Set your device token
+            listcast.setDeviceToken(deviceToken);
+            listcast.setTicker(ticker);
+            listcast.setTitle(title);
+            listcast.setText(content);
+            listcast.goAppAfterOpen();
+            listcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
+            // TODO Set 'production_mode' to 'false' if it's a test device.
+            // For how to register a test device, please see the developer doc.
+            listcast.setProductionMode();
+            // Set customized fields
+            listcast.setExtraField("test", "helloworld");
+            client.send(listcast,listener);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(listener!=null){
+                listener.onFail(e);
+            }
+        }
     }
 
     /**

@@ -27,9 +27,13 @@ public class PushCenter {
     /** 标记用户可以接受短信的tag */
     public static final String TAG_RECIEVE_SMS = "tagrecievesms";
 
+
+    private static final String MI5_DEVICE_TOKEN = "Au_Vge514bCYJhoLGW6GjitXOL58hx9oH6wGDKRRX2hj";
+    private static final String MIMAX_DEVICE_TOKEN = "Ai1obrPs_MgiPFMhS3_YV37YaC-y-aIc14MPHXPrGMTd";
+
     /** 发送推送 */
     public static void send(NewSmsEvent event,PushSendListener listener){
-        Demo.sendAndroidGroupcast("13511097504新消息", "13511097504新消息", event.toString(), listener,TAG_RECIEVE_SMS);
+        Demo.sendAndroidListcast("13511097504新消息", "13511097504新消息", event.toString(), listener,MI5_DEVICE_TOKEN,MIMAX_DEVICE_TOKEN);
     }
 
     /** 注册接受广播 */
