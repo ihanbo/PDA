@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         if ( v == getMsg ) {
             try {
-                Demo.sendAndroidBroadcast();
             } catch (Exception e) {
                 e.printStackTrace();
             }

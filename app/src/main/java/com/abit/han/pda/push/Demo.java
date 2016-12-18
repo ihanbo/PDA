@@ -33,19 +33,25 @@ public class Demo {
      * 广播
      * @throws Exception
      */
-    public static void sendAndroidBroadcast() throws Exception {
-        AndroidBroadcast broadcast = new AndroidBroadcast(appkey, appMasterSecret);
-        broadcast.setTicker("Android broadcast ticker");
-        broadcast.setTitle("rrtitle");
-        broadcast.setText("Android broadcast text");
-        broadcast.goAppAfterOpen();
-        broadcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
-        // TODO Set 'production_mode' to 'false' if it's a test device.
-        // 设置生产模式
-        broadcast.setProductionMode();
-        // Set customized fields
-        broadcast.setExtraField("test", "helloworld");
-        client.send(broadcast);
+    public static void sendAndroidBroadcast(String ticker,String title,String content,PushSendListener listener)  {
+        try {
+            AndroidBroadcast broadcast = new AndroidBroadcast(appkey, appMasterSecret);
+            broadcast.setTicker(ticker);
+            broadcast.setTitle(title);
+            broadcast.setText(content);
+            broadcast.goAppAfterOpen();
+            broadcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
+            // TODO Set 'production_mode' to 'false' if it's a test device.
+            // 设置生产模式
+            broadcast.setProductionMode();
+            // Set customized fields
+            broadcast.setExtraField("test", "helloworld");
+            client.send(broadcast,listener);
+        } catch (Exception e) {
+            if(listener!=null){
+                listener.onFail(e);
+            }
+        }
     }
 
     /**

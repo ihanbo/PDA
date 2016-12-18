@@ -29,7 +29,7 @@ public class PushCenter {
 
     /** 发送推送 */
     public static void send(NewSmsEvent event,PushSendListener listener){
-        Demo.sendAndroidGroupcast(MESSAGE_ALIAS, "13511097504新消息", event.toString(), listener,TAG_RECIEVE_SMS);
+        Demo.sendAndroidGroupcast("13511097504新消息", "13511097504新消息", event.toString(), listener,TAG_RECIEVE_SMS);
     }
 
     /** 注册接受广播 */
@@ -75,7 +75,7 @@ public class PushCenter {
 
 
         //设置用户TAG
-//        mPushAgent.getTagManager().update(new TagCallBack(),TAG_RECIEVE_SMS);
+        mPushAgent.getTagManager().update(new TagCallBack(),TAG_RECIEVE_SMS);
 
         /*// sdk关闭通知声音
 		mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
@@ -86,6 +86,7 @@ public class PushCenter {
 		mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);*/
 
 
+        //设置自定义通知栏
        /* UmengMessageHandler messageHandler = new UmengMessageHandler() {
             *//**
          * 自定义消息的回调方法
