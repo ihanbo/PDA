@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.abit.han.pda.App;
 import com.abit.han.pda.event.NewSmsEvent;
+import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.util.ll;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -46,7 +47,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         format.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
                         String sendContent = format.format(date) + ":" + sender + "--" + content;
                         Log.e("SmsReceicer onReceive ", sendContent + " ");
-                        App.getAppEventBus().post(new NewSmsEvent(content,sender, format.format(date)));
+                        BaseService.startService(new NewSmsEvent(content,sender, format.format(date)));
                     }
                 }
             }

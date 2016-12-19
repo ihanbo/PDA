@@ -1,5 +1,9 @@
 package com.abit.han.pda.event;
 
+import android.os.Bundle;
+
+import com.abit.han.pda.service.IserviceData;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.helper.GsonUtil;
 
@@ -8,7 +12,7 @@ import cn.bmob.v3.helper.GsonUtil;
  * 新消息事件
  */
 
-public class NewSmsEvent extends BmobObject{
+public class NewSmsEvent extends BmobObject implements IserviceData{
     public String content;
     public String sender;
     public String time;
@@ -51,5 +55,10 @@ public class NewSmsEvent extends BmobObject{
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @Override
+    public void savaToBundle(Bundle bundle) {
+
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.abit.han.pda.bmob.BmobCenter;
+import com.abit.han.pda.recievepush.RecievePushCenter;
 import com.abit.han.pda.sendpush.SendPushCenter;
 import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.service.FakeService;
@@ -47,7 +48,8 @@ public class App extends Application {
         //启动服务
         BaseService.startService(IserviceData.START_SERVICE);
         //注册推送
-        SendPushCenter.mInstance.registerToRecievePush(this);
+        SendPushCenter.mInstance.initSendPush(this);
+        RecievePushCenter.mInstance.initRecievePush(this);
         //ServiceDispatch注册服务
         ServiceDispatch.registeAllServices();
 
