@@ -3,6 +3,7 @@ package com.abit.han.pda.util;
 import android.util.Log;
 
 import com.abit.han.pda.BuildConfig;
+import com.yiche.library.ylog.YLog;
 
 /**
  * Log日志
@@ -13,7 +14,7 @@ public class ll {
         if(BuildConfig.DEBUG){
             throw new RuntimeException(msg);
         }else{
-            Log.e("hh",msg);
+            YLog.e("hh",msg);
         }
     }
 
@@ -31,6 +32,6 @@ public class ll {
             sb.append(s[i]);
             sb.append("<-->");
         }
-        Log.i("hh",sb.toString());
+        YLog.i("hh",sb.toString());
     }
 }

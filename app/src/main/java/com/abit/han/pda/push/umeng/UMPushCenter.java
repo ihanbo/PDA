@@ -69,7 +69,7 @@ public class UMPushCenter implements IPush{
 
     @Override
     public void sendPush(PushData data, PushSendListener listener) {
-        Demo.sendAndroidListcast(data.title, data.title, data.content, listener,MI5_DEVICE_TOKEN,MIMAX_DEVICE_TOKEN);
+        Demo.sendAndroidUnicast(data.title, data.title, data.content, listener,MI5_DEVICE_TOKEN);
     }
 
 

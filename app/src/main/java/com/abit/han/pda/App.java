@@ -13,6 +13,9 @@ import com.abit.han.pda.service.IserviceData;
 import com.abit.han.pda.service.ServiceDispatch;
 import com.facebook.stetho.Stetho;
 import com.umeng.message.PushAgent;
+import com.yiche.library.ylog.ErrorListener;
+import com.yiche.library.ylog.Printer;
+import com.yiche.library.ylog.YLog;
 import com.yiche.net.NetCenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,6 +37,8 @@ public class App extends Application {
         appEventBus = EventBus.builder().eventInheritance(false).build();
         //初始化Bmob
         BmobCenter.init(this);
+        //初始化log
+        initYLog();
         //启动FakeService
         FakeService.start(appEventBus);
         //初始化Stetho
@@ -46,6 +51,7 @@ public class App extends Application {
         PushCenter.instance.registerToRecievePush(this);
         //ServiceDispatch注册服务
         ServiceDispatch.registeAllServices();
+
     }
 
 
@@ -73,6 +79,22 @@ public class App extends Application {
                         .enableWebKitInspector(
                                 Stetho.defaultInspectorModulesProvider(this))
                         .build());
+    }
+
+
+    private void initYLog() {
+        YLog.init("pda")
+                .debug(BuildConfig.DEBUG)
+                .showProcessName(this)
+                .showThreadName(true)
+                .showStackTrace(true)
+                .showPriority(Printer.ERROR)
+                .setErrorListener(new ErrorListener() {
+                    @Override
+                    public void onThrowable(int priority, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
     }
 
 }
