@@ -1,12 +1,12 @@
-package com.abit.han.pda.push.umeng;
+package com.abit.han.pda.sendpush.umeng;
 
-import com.abit.han.pda.push.PushSendListener;
-import com.abit.han.pda.push.umeng.pushtype.AndroidBroadcast;
-import com.abit.han.pda.push.umeng.pushtype.AndroidCustomizedcast;
-import com.abit.han.pda.push.umeng.pushtype.AndroidFilecast;
-import com.abit.han.pda.push.umeng.pushtype.AndroidGroupcast;
-import com.abit.han.pda.push.umeng.pushtype.AndroidListcast;
-import com.abit.han.pda.push.umeng.pushtype.AndroidUnicast;
+import com.abit.han.pda.sendpush.SendPushSendListener;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidBroadcast;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidCustomizedcast;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidFilecast;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidGroupcast;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidListcast;
+import com.abit.han.pda.sendpush.umeng.pushtype.AndroidUnicast;
 import com.abit.han.pda.util.ll;
 
 import org.json.JSONArray;
@@ -34,7 +34,7 @@ public class Demo {
      * 广播
      * @throws Exception
      */
-    public static void sendAndroidBroadcast(String ticker,String title,String content,PushSendListener listener)  {
+    public static void sendAndroidBroadcast(String ticker,String title,String content,SendPushSendListener listener)  {
         try {
             AndroidBroadcast broadcast = new AndroidBroadcast(appkey, appMasterSecret);
             broadcast.setTicker(ticker);
@@ -60,7 +60,7 @@ public class Demo {
      *
      * @throws Exception
      */
-    public static void sendAndroidUnicast(String ticker,String title,String content,PushSendListener listener,String token) {
+    public static void sendAndroidUnicast(String ticker, String title, String content, SendPushSendListener listener, String token) {
         try {
             AndroidUnicast unicast = new AndroidUnicast(appkey, appMasterSecret);
             // TODO Set your device token
@@ -92,7 +92,7 @@ public class Demo {
      * @param listener
      * @param deviceToken
      */
-    public static void sendAndroidListcast(String ticker,String title,String content,PushSendListener listener,String... deviceToken) {
+    public static void sendAndroidListcast(String ticker, String title, String content, SendPushSendListener listener, String... deviceToken) {
         try {
             AndroidListcast listcast = new AndroidListcast(appkey, appMasterSecret);
             // TODO Set your device token
@@ -120,7 +120,7 @@ public class Demo {
      * 组播
      * @throws Exception
      */
-    public static void sendAndroidGroupcast(String ticker,String title,String content,PushSendListener listener,String... tag)  {
+    public static void sendAndroidGroupcast(String ticker, String title, String content, SendPushSendListener listener, String... tag)  {
         if(tag==null||tag.length==0){
             if(listener!=null){
                 listener.onFail(new RuntimeException("tag 不能为空"));
@@ -172,7 +172,7 @@ public class Demo {
      * 自定义-直接发送
      * @throws Exception
      */
-    public static void sendAndroidCustomizedcast(String alias,String title,String content,PushSendListener sendListener)  {
+    public static void sendAndroidCustomizedcast(String alias,String title,String content,SendPushSendListener sendListener)  {
         AndroidCustomizedcast customizedcast = null;
         try {
             customizedcast = new AndroidCustomizedcast(appkey, appMasterSecret);

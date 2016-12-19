@@ -1,9 +1,9 @@
-package com.abit.han.pda.push.umeng;
+package com.abit.han.pda.sendpush.umeng;
 
 
 import android.util.Log;
 
-import com.abit.han.pda.push.PushSendListener;
+import com.abit.han.pda.sendpush.SendPushSendListener;
 import com.abit.han.pda.util.ll;
 import com.yiche.net.NetCenter;
 import com.yiche.net.NetResultPac;
@@ -38,7 +38,7 @@ public class PushClient {
         return send(msg,null);
     }
 
-    public boolean send(UmengNotification msg, final PushSendListener failRun) throws Exception{
+    public boolean send(UmengNotification msg, final SendPushSendListener failRun) throws Exception{
         String timestamp = Integer.toString((int) (System.currentTimeMillis() / 1000));
 
         msg.setPredefinedKeyValue("timestamp", timestamp);

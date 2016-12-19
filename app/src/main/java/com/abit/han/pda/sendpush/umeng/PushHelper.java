@@ -1,4 +1,4 @@
-package com.abit.han.pda.push.umeng;
+package com.abit.han.pda.sendpush.umeng;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

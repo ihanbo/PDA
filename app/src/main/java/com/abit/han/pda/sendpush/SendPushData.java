@@ -1,20 +1,20 @@
-package com.abit.han.pda.push;
+package com.abit.han.pda.sendpush;
 
 /**
  * 推送消息实体类
  */
 
-public class PushData {
+public class SendPushData {
     public String title;
     public String content;
     public String tag;
 
 
 
-    public PushData() {
+    public SendPushData() {
     }
 
-    public PushData setTag(String... tag) {
+    public SendPushData setTag(String... tag) {
         if(tag==null||tag.length==0){
             return this;
         }
@@ -26,12 +26,12 @@ public class PushData {
         return this;
     }
 
-    public PushData setTitle(String title) {
+    public SendPushData setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public PushData setContent(String content) {
+    public SendPushData setContent(String content) {
         this.content = content;
         return this;
     }

@@ -1,12 +1,8 @@
 package com.abit.han.pda.service;
 
-import android.util.Log;
-
 import com.abit.han.pda.App;
 import com.abit.han.pda.event.NewPushEvent;
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.push.PushCenter;
-import com.abit.han.pda.push.PushSendListener;
 import com.abit.han.pda.smsrobot.SmsProcesser;
 import com.abit.han.pda.util.ll;
 import com.abit.han.pda.util.tt;

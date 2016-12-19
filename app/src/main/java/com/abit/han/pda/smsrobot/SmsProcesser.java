@@ -1,10 +1,10 @@
 package com.abit.han.pda.smsrobot;
 
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.push.PushData;
+import com.abit.han.pda.sendpush.SendPushData;
 import com.abit.han.pda.util.ll;
-import com.abit.han.pda.push.PushCenter;
-import com.abit.han.pda.push.PushSendListener;
+import com.abit.han.pda.sendpush.SendPushCenter;
+import com.abit.han.pda.sendpush.SendPushSendListener;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -17,7 +17,7 @@ public class SmsProcesser {
     /** 来信短信了*/
     public static void onGetNewMsg(NewSmsEvent event){
 
-        PushCenter.instance.sendPush(new PushData()
+        SendPushCenter.mInstance.sendPush(new SendPushData()
                 .setTitle("13511097504短信")
                 .setContent(event.getPushString()), new SmsSendListener());
         event.save(new BmobSaveListener());
@@ -38,7 +38,7 @@ public class SmsProcesser {
 
 
     /** 推送回调 */
-    public static class SmsSendListener implements PushSendListener{
+    public static class SmsSendListener implements SendPushSendListener {
 
         @Override
         public void onFail(Throwable e) {

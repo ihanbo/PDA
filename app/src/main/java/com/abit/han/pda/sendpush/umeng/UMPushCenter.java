@@ -1,10 +1,12 @@
-package com.abit.han.pda.push.umeng;
+package com.abit.han.pda.sendpush.umeng;
 
 import android.app.Application;
 import android.content.Intent;
-import com.abit.han.pda.push.IPush;
-import com.abit.han.pda.push.PushData;
-import com.abit.han.pda.push.PushSendListener;
+
+import com.abit.han.pda.recievepush.IRecievePush;
+import com.abit.han.pda.sendpush.ISendPush;
+import com.abit.han.pda.sendpush.SendPushData;
+import com.abit.han.pda.sendpush.SendPushSendListener;
 import com.abit.han.pda.util.ll;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
@@ -16,7 +18,7 @@ import com.umeng.message.tag.TagManager;
  * 推送中心
  */
 
-public class UMPushCenter implements IPush{
+public class UMPushCenter implements ISendPush,IRecievePush {
 
     public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
     /** 标记用户可以接受短信的tag */
@@ -29,8 +31,21 @@ public class UMPushCenter implements IPush{
     private static final String MIMAX_DEVICE_TOKEN = "Ai1obrPs_MgiPFMhS3_YV37YaC-y-aIc14MPHXPrGMTd";
 
 
+    private static  UMPushCenter instance;
+
+    public static UMPushCenter getInstance(){
+        if(instance==null){
+            instance = new UMPushCenter();
+        }
+        return instance;
+    }
+
+    private UMPushCenter() {
+
+    }
+
     @Override
-    public void registerToRecievePush(final  Application application) {
+    public void initRecievePush(final  Application application) {
         PushAgent mPushAgent = PushAgent.getInstance(application);
         mPushAgent.setDebugMode(true);
 
@@ -68,7 +83,7 @@ public class UMPushCenter implements IPush{
     }
 
     @Override
-    public void sendPush(PushData data, PushSendListener listener) {
+    public void sendPush(SendPushData data, SendPushSendListener listener) {
         Demo.sendAndroidUnicast(data.title, data.title, data.content, listener,MI5_DEVICE_TOKEN);
     }
 

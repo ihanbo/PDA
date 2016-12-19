@@ -1,7 +1,7 @@
-package com.abit.han.pda.push.umeng.pushtype;
+package com.abit.han.pda.sendpush.umeng.pushtype;
 
 
-import com.abit.han.pda.push.umeng.AndroidNotification;
+import com.abit.han.pda.sendpush.umeng.AndroidNotification;
 
 /**
  * 单播
