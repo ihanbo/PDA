@@ -4,6 +4,7 @@ package com.abit.han.pda.push.umeng;
 import android.util.Log;
 
 import com.abit.han.pda.push.PushSendListener;
+import com.abit.han.pda.util.ll;
 import com.yiche.net.NetCenter;
 import com.yiche.net.NetResultPac;
 import com.yiche.net.NetworkResponse;
@@ -50,7 +51,7 @@ public class PushClient {
         rb.setPostBody(PostBody.create("application/json; charset=utf-8",postBody));
         // Send the post request and get the response
 //        post(url,postBody);
-
+        ll.i("友盟推送,body:"+postBody);
         NetCenter.newRequest(rb, new YCStringRequest() {
             @Override
             public void onResponse(NetResultPac<String> netResPonse) {

@@ -29,9 +29,9 @@ public class SmsProcesser {
         @Override
         public void done(String objectId, BmobException e) {
             if(e==null){
-                ll.i(getClass().getSimpleName(),"添加数据成功，返回objectId为："+objectId);
+                ll.i("添加数据成功，返回objectId为："+objectId);
             }else{
-                ll.i(getClass().getSimpleName(),"添加数据失败：" + e.getMessage());
+                ll.i("添加数据失败：" + e.getMessage());
             }
         }
     }
@@ -47,7 +47,7 @@ public class SmsProcesser {
 
         @Override
         public void onSuccess(int status, String result) {
-            ll.i(getClass().getSimpleName(),"推送成功-->"+result);
+            ll.i("推送成功-->"+result);
         }
     }
 

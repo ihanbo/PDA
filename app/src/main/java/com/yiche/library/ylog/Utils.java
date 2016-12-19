@@ -60,11 +60,11 @@ class Utils {
       }
     }
 
-    if (BuildConfig.DEBUG) {
+    /*if (BuildConfig.DEBUG) {
       for (StackTraceElement traceElement : elements) {
         Log.d(Setting.TAG, traceElement.toString());
       }
-    }
+    }*/
 
     StackTraceElement[] stackTraceElements = new StackTraceElement[offset];
 

@@ -50,13 +50,13 @@ public class UMPushCenter implements IPush{
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
-                ll.i("PushCenter","注册成功，deviceToken: " + deviceToken);
+                ll.i("注册成功，deviceToken: " + deviceToken);
                 application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
 
             @Override
             public void onFailure(String s, String s1) {
-                ll.i(getClass().getSimpleName(),"注册失败: " + s + " " + s1);
+                ll.i("注册失败: " + s + " " + s1);
                 application.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });

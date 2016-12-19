@@ -14,7 +14,7 @@ public class ll {
         if(BuildConfig.DEBUG){
             throw new RuntimeException(msg);
         }else{
-            YLog.e("hh",msg);
+            YLog.e(msg);
         }
     }
 
@@ -32,6 +32,6 @@ public class ll {
             sb.append(s[i]);
             sb.append("<-->");
         }
-        YLog.i("hh",sb.toString());
+        YLog.i(sb.toString());
     }
 }

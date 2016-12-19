@@ -28,6 +28,8 @@ public abstract class AndroidNotification extends UmengNotification {
 	}
 	// Set key/value in the rootJson, for the keys can be set please see ROOT_KEYS, PAYLOAD_KEYS, 
 	// BODY_KEYS and POLICY_KEYS.
+
+
 	@Override
 	public boolean setPredefinedKeyValue(String key, Object value) throws Exception {
 		if (ROOT_KEYS.contains(key)) {
