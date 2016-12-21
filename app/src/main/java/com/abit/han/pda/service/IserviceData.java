@@ -7,14 +7,18 @@ import android.os.Bundle;
  */
 
 public interface IserviceData {
-    String FLAG = "flag";
     void savaToBundle(Bundle bundle);
+    String getServiceName();
 
     IserviceData START_SERVICE = new IserviceData() {
 
         @Override
         public void savaToBundle(Bundle bundle) {
-            bundle.putString(FLAG,"start service");
+        }
+
+        @Override
+        public String getServiceName() {
+            return ServiceDispatch.SERVICE_START;
         }
     };
 }

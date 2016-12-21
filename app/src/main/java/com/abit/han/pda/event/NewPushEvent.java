@@ -73,7 +73,7 @@ public class NewPushEvent implements Parcelable,IserviceData {
 
     @Override
     public void savaToBundle(Bundle bundle) {
-        bundle.putString(FLAG, ServiceDispatch.PUSH_RECIEVE_SERVICE);
+        bundle.putString(FLAG, ServiceDispatch.SERVICE_RECIEVE_PUSH);
         bundle.putParcelable(KEY,this);
     }
 }

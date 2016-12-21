@@ -30,7 +30,7 @@ public class FakeService {
         }
     }
     //新消息
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventNewSMS(NewSmsEvent event){
         SmsProcesser.onGetNewMsg(event);
     }

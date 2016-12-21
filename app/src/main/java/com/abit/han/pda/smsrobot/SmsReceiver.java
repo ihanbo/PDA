@@ -16,6 +16,8 @@ import com.abit.han.pda.event.NewSmsEvent;
 import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.util.ll;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class SmsReceiver extends BroadcastReceiver {
     public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
     public static final String SMS_DELIVER_ACTION = "android.provider.Telephony.SMS_DELIVER";
@@ -47,7 +49,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         format.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
                         String sendContent = format.format(date) + ":" + sender + "--" + content;
                         Log.e("SmsReceicer onReceive ", sendContent + " ");
-                        BaseService.startService(new NewSmsEvent(content,sender, format.format(date)));
+                        App.getAppEventBus().post( new NewSmsEvent(content,sender, format.format(date)));
                     }
                 }
             }
