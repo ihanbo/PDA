@@ -1,10 +1,9 @@
 package com.abit.han.pda.smsrobot;
 
 import com.abit.han.pda.event.NewSmsEvent;
-import com.abit.han.pda.sendpush.SendPushData;
 import com.abit.han.pda.util.ll;
-import com.abit.han.pda.sendpush.SendPushCenter;
-import com.abit.han.pda.sendpush.SendPushSendListener;
+import com.xiaomi.mipushdemo.send.MiBroadCast;
+
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -16,10 +15,10 @@ public class SmsProcesser {
 
     /** 来信短信了*/
     public static void onGetNewMsg(NewSmsEvent event){
-
-        SendPushCenter.mInstance.sendPush(new SendPushData()
+        MiBroadCast.getInstance().obtain()
                 .setTitle("13511097504短信")
-                .setContent(event.getPushString()), new SmsSendListener());
+                .setContent(event.getPushString())
+                .sendToTarget();
         event.save(new BmobSaveListener());
     }
 
@@ -35,21 +34,4 @@ public class SmsProcesser {
             }
         }
     }
-
-
-    /** 推送回调 */
-    public static class SmsSendListener implements SendPushSendListener {
-
-        @Override
-        public void onFail(Throwable e) {
-            ll.i(getClass().getSimpleName(),"推送失败-->"+e);
-        }
-
-        @Override
-        public void onSuccess(int status, String result) {
-            ll.i("推送成功-->"+result);
-        }
-    }
-
-
 }

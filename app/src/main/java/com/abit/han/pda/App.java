@@ -8,14 +8,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.abit.han.pda.bmob.BmobCenter;
-import com.abit.han.pda.recievepush.RecievePushCenter;
-import com.abit.han.pda.sendpush.SendPushCenter;
 import com.abit.han.pda.service.BaseService;
 import com.abit.han.pda.service.FakeService;
 import com.abit.han.pda.service.IserviceData;
 import com.abit.han.pda.service.ServiceDispatch;
 import com.facebook.stetho.Stetho;
-import com.umeng.message.PushAgent;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
@@ -39,7 +36,6 @@ import java.util.List;
 public class App extends Application {
     public static App mApp;
     private EventBus appEventBus;
-    private PushAgent pushAgent;
 
     @Override
     public void onCreate() {
@@ -60,9 +56,7 @@ public class App extends Application {
         //启动服务
         BaseService.startService(IserviceData.START_SERVICE);
         //注册推送
-        SendPushCenter.mInstance.initSendPush(this);
         MiPushRecieverCenter.getInstance().register(this, miPushReciever);
-        RecievePushCenter.mInstance.initRecievePush(this);
         //ServiceDispatch注册服务
         ServiceDispatch.registeAllServices();
 
