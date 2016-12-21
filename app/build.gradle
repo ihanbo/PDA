@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
+
+    repositories{
+        flatDir{
+            dirs 'libs'
+        }
+    }
+
     compileSdkVersion Integer.valueOf(COMPILE_SDK_VERSION)
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
@@ -41,5 +48,5 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     compile project(':PushSDK')
-    compile project(':PushDemo')
+    compile(name:'PushDemo-release',ext:'aar')
 }
