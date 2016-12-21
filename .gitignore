@@ -10,3 +10,4 @@
 .idea/
 app/src/main/java/com/abit/han/pda/util/Costant.java
 PushSDK/build/*
+app/libs/PushDemo-release.aar
