@@ -1,0 +1,128 @@
+
+推送Server端 类名	使用说明
+Message	    构建要发送的消息内容。
+Builder	    构建发送给Android设备的Message对象。
+IOSBuilder	构建发送给IOS设备的Message对象。
+TargetedMessage	构建要发送的消息内容和消息的发送目标。
+Sender	    MiPush消息发送类。
+Result	    Sender发送消息后，服务器返回的结果。
+Stats	    获取发送的消息统计数据。
+Tracer	    追踪消息状态。
+Subscription	订阅/取消订阅标签。
+Feedback	获取反馈信息，比如失效的regId列表。注：目前仅支持安卓设备。
+DevTools	设备工具集，目前提供了获取某个用户的所有alias列表和topic列表。
+Constants	常量定义。
+ErrorCode	Sender发送消息后，返回的错误类型。
+
+
+表 2. Message.Builder类的方法列表
+方法名称	                    方法说明
+Builder()	                建立Builder对象，用来构造消息。
+
+payload(String payload)     设置要发送的消息内容payload，不允许全是空白字符，长度小于4K，中英文均以一个计算。
+title(String title)	        设置在通知栏展示的通知的标题，不允许全是空白字符，长度小于16，中英文均以一个计算。
+description(String description)	设置在通知栏展示的通知的描述，不允许全是空白字符，长度小于128，中英文均以一个计算。
+
+passThrough(int passThrough)	设置消息是否通过透传的方式送给app，1表示透传消息，0表示通知栏消息。
+notifyType(Integer type)	    设置通知类型，type的值可以是DEFAULT_ALL或者以下其他几种的OR组合：
+    DEFAULT_ALL = -1;
+    DEFAULT_SOUND  = 1;    // 使用默认提示音提示
+    DEFAULT_VIBRATE = 2;   // 使用默认震动提示
+    DEFAULT_LIGHTS = 4;    // 使用默认led灯光提示
+
+restrictedPackageName(String packageName)	    设置app的包名packageName。packageName必须和开发者网站上申请的结果一致。
+restrictedPackageNames(String[] packageNames)	设置app的多包名packageNames（多包名发送广播消息）。packageNames必须和开发者网站上申请的结果一致。可以为空，为空则默认给所有渠道包名推送。备注：不能同时调用restrictedPackageName方法和restrictedPackageNames方法。
+timeToLive(int milliseconds)	可选项。如果用户离线，设置消息在服务器保存的时间，单位：ms。服务器默认最长保留两周。
+timeToSend(long timeToSend) 	可选项。定时发送消息。timeToSend是以毫秒为单位的时间戳。注：仅支持七天内的定时消息。
+notifyId(Integer id)	        可选项。默认情况下，通知栏只显示一条推送消息。如果通知栏要显示多条推送消息，
+                                需要针对不同的消息设置不同的notify_id（相同notify_id的通知栏消息会覆盖之前的）。
+enableFlowControl(boolean needFlowControl)	可选项。控制消息是否需要进行平缓发送（如果开启平滑推送，则qps 默认为3000/s）。默认不支持。也可以直接通过extra字段自定义设置平滑推送的速度（如果自定义了平滑推送的extra字段，那么不再需要调用enableFlowControl()方法）。key是flow_control，value代表平滑推送的速度。注：服务端支持最低1000/s的qps，最高100000/s。也就是说，如果将平滑推送设置为500，那么真实的推送速度是3000/s，如果大于1000小于100000，则以设置的qps为准。
+extra(String key, String value)	            可选项，对app提供一些扩展的功能，请参考2.2。除了这些扩展功能，
+                                            开发者还可以定义一些key和value来控制客户端的行为。
+                                            注：key和value的字符数不能超过1024，至多可以设置10个key-value键值对。
+build()	根据前面的属性，生成message对象。
+
+
+
+
+表 4. TargetedMessage
+TargetedMessage封装了MiPush推送服务系统中的消息Message对象，和该Message对象所要发送到的目标。
+
+方法名称	                方法说明
+TargetedMessage()	    构造函数。
+setTarget(int targetType, String target)	设置消息的发送目标。
+        targetType表示目标类型，目前支持TargetedMessage.TARGET_TYPE_REGID和TargetedMessage.TARGET_TYPE_ALIAS两种类型。
+        当targetType是TARGET_TYPE_REGID时，target需要设置为regid；
+        当targetType是TARGET_TYPE_ALIAS时，target需要设置为alias。
+setMessage(Message message)	设置消息。
+
+
+Demo:
+
+注意：下面函数返回的List中所有 TargetedMessage对象的targetType必须相同：全是
+TargetedMessage.TARGET_TYPE_REGID，或者全是TargetedMessage.TARGET_TYPE_ALIAS。
+
+private List<TargetedMessage> buildMessages() throws Exception {
+     List<TargetedMessage> messages = new ArrayList<TargetdMessage>();
+     TargetedMessage message1 = new TargetedMessage();
+     message1.setTarget(TargetedMessage.TARGET_TYPE_ALIAS, “alias1”);
+     message1.setMessage(buildMessage());
+     messages.add(message1);
+     TargetedMessage message2 = new TargetedMessage();
+     message2.setTarget(TargetedMessage.TARGET_TYPE_ALIAS, “alias2”);
+     message2.setMessage(buildMessage());
+     messages.add(message2);
+     return messages;
+}
+
+
+
+
+表 5. Sender方法列表
+
+方法名称	                            方法说明
+Sender(String appSecret)	        构造Sender对象。appSecret是在开发者网站上注册时生成的, 可在应用详情下查看。
+send(Message message, String registrationId,int retries)
+                                    根据registrationId，发送消息到指定设备上，retries为发送失败之后重试的次数。
+
+send(Message message, List<String> regIds, int retries)
+                                    根据regIds，发送消息到指定的一组设备上，retries为发送失败之后重试的次数。regIds的个数不得超过1000个。
+
+send(List<TargetedMessage>messages, int retries)
+                                    发送一组消息。其中TargetedMessage类中封装了Message对象和该Message所要发送的目标。注意：messages内所有TargetedMessage对象的targetType必须相同，
+                                    不支持在一个调用中同时给regid和alias发送消息。
+
+send(List<TargetedMessage> messages, int retries, longtimeToSend)
+                                    定时发送一组消息。timeToSend是用自1970年1月1日以来00:00:00.0 UTC时间表示（以毫秒为单位的时间）。
+                                    注：仅支持七天内的定时消息。
+
+sendToAlias(Message message, String alias, int retries)
+                                    根据alias，发送消息到指定设备上，retries为发送失败之后重试的次数。
+                                    alias不允许全是空白字符，不能包含逗号，长度小于128，中英文均以一个计算。
+
+sendToAlias(Message message, List<String> aliasList, intretries)
+                                    根据aliasList，发送消息到指定的一组设备上，retries为发送失败之后重试的次数。aliasList中的每个元素不允许全是空白字符，不能包含逗号，长度小于128，中英文均以一个计算；元素的个数不得超过1000个。
+sendToUserAccount(Message message, String userAccount, int retries)
+                                    根据account，发送消息到指定account上，retries为发送失败之后重试的次数。account不允许全是空白字符，不能包含逗号，长度小于128，中英文均以一个计算。
+sendToUserAccount(Message message, List<String> accountList, intretries)
+                                    根据accountList，发送消息到指定的一组设备上，retries为发送失败之后重试的次数。accountList中的每个元素不允许全是空白字符，不能包含逗号，长度小于128，中英文均以一个计算；元素的个数不得超过1000个。
+broadcast(Message message, String topic, int retries)
+                                    根据topic，发送消息到指定一组设备上，retries为发送失败之后重试的次数。topic不允许全是空白字符，长度小于128，中英文均以一个计算。
+broadcastAll(Message message, int retries)
+                                    向所有设备发送消息，retries为发送失败之后重试的次数。
+multiTopicBroadcast(Message message, List<String> topics,BROADCAST_TOPIC_OP topicOp, int retries)
+                                    向多个topic广播消息，支持topic间的交集、并集或差集（如果只有一个topic请用单topic版本）。
+                                    其中，BROADCAST_TOPIC_OP是一个枚举类型，指定了发送广播消息时多个topic之间的运算关系。
+                public enum BROADCAST_TOPIC_OP {
+                        UNION,        // 并集
+                        INTERSECTION, // 交集
+                        EXCEPT,       // 差集
+                }
+
+例如：topics的列表元素是[A, B, C, D]，则并集结果是A∪B∪C∪D，交集的结果是A ∩B ∩C
+∩D，差集的结果是A-B-C-D
+
+注：发送广播消息时topic的数量不能超过5。
+
+checkScheduleJobExist(String msgId)	检测定时消息的任务是否存在。
+deleteScheduleJob(String msgId)	    删除指定的定时消息。

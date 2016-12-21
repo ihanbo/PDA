@@ -13,6 +13,10 @@ import com.abit.han.pda.service.IserviceData;
 import com.abit.han.pda.service.ServiceDispatch;
 import com.facebook.stetho.Stetho;
 import com.umeng.message.PushAgent;
+import com.xiaomi.mipush.sdk.MiPushCommandMessage;
+import com.xiaomi.mipush.sdk.MiPushMessage;
+import com.xiaomi.mipush.sdk.PushMessageReceiver;
+import com.xiaomi.mipushdemo.MiPushRecieverCenter;
 import com.yiche.library.ylog.ErrorListener;
 import com.yiche.library.ylog.Printer;
 import com.yiche.library.ylog.YLog;
@@ -49,6 +53,37 @@ public class App extends Application {
         BaseService.startService(IserviceData.START_SERVICE);
         //注册推送
         SendPushCenter.mInstance.initSendPush(this);
+        MiPushRecieverCenter.getInstance().register(this, new PushMessageReceiver() {
+            @Override
+            public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
+                super.onReceivePassThroughMessage(context, miPushMessage);
+            }
+
+            @Override
+            public void onNotificationMessageClicked(Context context, MiPushMessage miPushMessage) {
+                super.onNotificationMessageClicked(context, miPushMessage);
+            }
+
+            @Override
+            public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
+                super.onNotificationMessageArrived(context, miPushMessage);
+            }
+
+            @Override
+            public void onReceiveMessage(Context context, MiPushMessage miPushMessage) {
+                super.onReceiveMessage(context, miPushMessage);
+            }
+
+            @Override
+            public void onReceiveRegisterResult(Context context, MiPushCommandMessage miPushCommandMessage) {
+                super.onReceiveRegisterResult(context, miPushCommandMessage);
+            }
+
+            @Override
+            public void onCommandResult(Context context, MiPushCommandMessage miPushCommandMessage) {
+                super.onCommandResult(context, miPushCommandMessage);
+            }
+        });
         RecievePushCenter.mInstance.initRecievePush(this);
         //ServiceDispatch注册服务
         ServiceDispatch.registeAllServices();
