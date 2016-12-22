@@ -54,7 +54,7 @@ public class App extends Application {
         //初始化网络
         NetCenter.init(this);
         //启动服务
-        BaseService.startService(IserviceData.START_SERVICE);
+//        BaseService.startService(IserviceData.START_SERVICE);
         //注册推送
         MiPushRecieverCenter.getInstance().register(this, miPushReciever);
         //ServiceDispatch注册服务

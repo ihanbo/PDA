@@ -23,7 +23,7 @@ public class ServiceDispatch {
     private static final ConcurrentHashMap<String,IDOService> services = new ConcurrentHashMap<>();
 
 
-    private static final String KEY_SERVICE_NAME = "service_name";
+    public static final String KEY_SERVICE_NAME = "service_name";
     private final static String KEY_BUNDLE_DATA = "bundle_data_key";
 
     public static void dispatch(IserviceProxy service,Intent intent,int flags, int startId){
